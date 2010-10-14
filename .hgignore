@@ -1,0 +1,28 @@
+syntax: glob
+#-- Files
+*.bak.*
+*.bak
+thumbs.db
+*.msi
+ 
+#-- Directories
+App_Data/*
+bin/
+obj/
+_ReSharper.*/
+tmp/
+.svn/
+ 
+#-- Microsoft Visual Studio specific
+*.user
+*.suo
+ 
+#-- MonoDevelop specific
+*.pidb
+*.userprefs
+*.usertasks
+ 
+syntax: regexp
+#-- Directories
+# ignore all bin folders except the one in project root directory
+#(?<!^)bin/

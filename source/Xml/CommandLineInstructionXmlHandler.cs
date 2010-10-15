@@ -29,12 +29,16 @@ namespace Silverseed.SubversionHook.Xml
       this.executeInstruction.Arguments = attributes.GetValueOrDefault("Arguments", String.Empty);
       
       int timeoutInMilliseconds;
-      Int32.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", String.Empty), out timeoutInMilliseconds);
-      this.executeInstruction.TimeoutInMilliseconds = timeoutInMilliseconds;
+      if (Int32.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", String.Empty), out timeoutInMilliseconds))
+      {
+        this.executeInstruction.TimeoutInMilliseconds = timeoutInMilliseconds;
+      }
 
       int expectedExitCode;
-      Int32.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", String.Empty), out expectedExitCode);
-      this.executeInstruction.ExpectedExitCode = expectedExitCode;
+      if (Int32.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", String.Empty), out expectedExitCode))
+      {
+        this.executeInstruction.ExpectedExitCode = expectedExitCode;
+      }
 
       return this.executeInstruction;
     }

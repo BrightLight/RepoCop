@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SubversionInfoHubCondition.cs" company="Silverseed.de">
+// <copyright file="RepositoryInfoHubCondition.cs" company="Silverseed.de">
 //    (c) 2010 Markus Hastreiter @ Silverseed.de
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,27 +20,27 @@ namespace Silverseed.RepoCop
 {
   using Silverseed.ComponentModel.Conditions;
   
-  internal abstract class SubversionInfoHubCondition : Condition
+  internal abstract class RepositoryInfoHubCondition : Condition
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubversionInfoHubCondition"/> class.
+    /// Initializes a new instance of the <see cref="RepositoryInfoHubCondition"/> class.
     /// </summary>
-    protected SubversionInfoHubCondition()
+    protected RepositoryInfoHubCondition()
       : base(false)
     {
-      SubversionInfoHub.Instance.PropertyChanged += this.SubversionInfoHub_PropertyChanged;
+      RepositoryInfoHub.Instance.PropertyChanged += this.SubversionInfoHub_PropertyChanged;
     }
 
     protected abstract void UpdateState(IRepoChangeInfo repoChangeInfo);
 
     /// <summary>
-    /// Handles the PropertyChanged event of the <see cref="SubversionInfoHub"/>.
+    /// Handles the PropertyChanged event of the <see cref="RepositoryInfoHub"/>.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
     private void SubversionInfoHub_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      this.UpdateState(SubversionInfoHub.Instance.RepoChangeInfo);
+      this.UpdateState(RepositoryInfoHub.Instance.RepoChangeInfo);
     }
   }
 }

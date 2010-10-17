@@ -20,7 +20,7 @@ namespace Silverseed.RepoCop
 {
   using System.Text.RegularExpressions;
 
-  internal class LogMessageCondition : SubversionInfoHubCondition
+  internal class LogMessageCondition : RepositoryInfoHubCondition
   {
     private readonly Regex logMessageRegExPattern;
 

@@ -20,7 +20,7 @@ namespace Silverseed.RepoCop
 {
   using System.Collections.Generic;
 
-  internal class AuthorCondition : SubversionInfoHubCondition
+  internal class AuthorCondition : RepositoryInfoHubCondition
   {
     private readonly List<string> authors = new List<string>();
 

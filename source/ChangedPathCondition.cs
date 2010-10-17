@@ -21,7 +21,7 @@ namespace Silverseed.RepoCop
   using System.Collections.Generic;
   using System.Text.RegularExpressions;
 
-  internal class ChangedPathCondition : SubversionInfoHubCondition
+  internal class ChangedPathCondition : RepositoryInfoHubCondition
   {
     private readonly Regex changedPathRegExPattern;
 

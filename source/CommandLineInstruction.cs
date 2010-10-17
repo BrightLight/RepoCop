@@ -62,8 +62,8 @@ namespace Silverseed.RepoCop
       processStartInfo.UseShellExecute = false;
       processStartInfo.RedirectStandardOutput = true;
       processStartInfo.RedirectStandardError = true;
-      processStartInfo.FileName = SubversionInfoHub.Instance.ParseTokens(this.FileName);
-      processStartInfo.Arguments = SubversionInfoHub.Instance.ParseTokens(this.Arguments);
+      processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
+      processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments);
 
       var process = new Process();
       process.StartInfo = processStartInfo;

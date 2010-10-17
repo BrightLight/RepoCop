@@ -29,7 +29,7 @@ namespace Silverseed.RepoCop
 
     protected override bool InternalExecute()
     {
-      Console.Error.WriteLine(SubversionInfoHub.Instance.ParseTokens(this.Message));
+      Console.Error.WriteLine(RepositoryInfoHub.Instance.ParseTokens(this.Message));
       return false; // this instruction always fails (hence its name)
     }
 

@@ -20,7 +20,7 @@ namespace Silverseed.RepoCop
 {
   using System;
 
-  internal class HookTypeCondition : SubversionInfoHubCondition
+  internal class HookTypeCondition : RepositoryInfoHubCondition
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="HookTypeCondition"/> class.

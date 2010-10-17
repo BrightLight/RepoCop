@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook.Xml
+namespace Silverseed.RepoCop.Xml
 {
   using System.Collections.Generic;
   using Silverseed.ComponentModel;

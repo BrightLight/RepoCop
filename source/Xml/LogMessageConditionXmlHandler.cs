@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Silverseed.ComponentModel;
 
-namespace Silverseed.SubversionHook.Xml
+namespace Silverseed.RepoCop.Xml
 {
   internal class LogMessageConditionXmlHandler : ConditionXmlHandler<LogMessageCondition>
   {

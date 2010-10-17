@@ -16,7 +16,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
   internal class MacroInstruction : Instruction
   {

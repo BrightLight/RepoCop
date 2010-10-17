@@ -16,13 +16,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
   using System;
   using System.IO;
   using log4net;
   using Silverseed.ComponentModel.Xml;
-  using Silverseed.SubversionHook.Xml;
+  using Silverseed.RepoCop.Xml;
 
   public enum HookType
   {

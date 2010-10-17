@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook.Xml
+namespace Silverseed.RepoCop.Xml
 {
   using System.Collections.Generic;
-  using Silverseed.ComponentModel;
+  using Silverseed.ComponentModel.Conditions;
   using Silverseed.ComponentModel.Xml;
 
   public abstract class ConditionXmlHandler<T> : NullXmlHandler

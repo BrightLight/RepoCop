@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Silverseed.SubversionHook.Xml
+namespace Silverseed.RepoCop.Xml
 {
   internal class AuthorConditionXmlHandler: ConditionXmlHandler<AuthorCondition>
   {

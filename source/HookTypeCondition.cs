@@ -16,7 +16,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
   using System;
 
@@ -27,12 +27,12 @@ namespace Silverseed.SubversionHook
     /// </summary>
     public HookTypeCondition()
     {
-      this.HookType = SubversionHook.HookType.Undefined;
+      this.HookType = HookType.Undefined;
     }
 
     protected override void UpdateState(IRepoChangeInfo repoChangeInfo)
     {
-      this.State = (this.HookType == SubversionHook.HookType.Undefined) || (this.HookType == repoChangeInfo.HookType);
+      this.State = (this.HookType == HookType.Undefined) || (this.HookType == repoChangeInfo.HookType);
     }
 
     public HookType HookType { get; set; }

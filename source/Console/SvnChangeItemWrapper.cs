@@ -16,7 +16,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook.Console
+namespace Silverseed.RepoCop.Subversion
 {
   using System;
   using SharpSvn;

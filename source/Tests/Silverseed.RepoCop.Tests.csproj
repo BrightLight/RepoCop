@@ -8,8 +8,8 @@
     <ProjectGuid>{8979F2C3-637E-4FF3-90FA-091373824CC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Silverseed.SubversionHook.Tests</RootNamespace>
-    <AssemblyName>Silverseed.SubversionHook.Tests</AssemblyName>
+    <RootNamespace>Silverseed.RepoCop.Tests</RootNamespace>
+    <AssemblyName>Silverseed.RepoCop.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -54,9 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Silverseed.SubversionHook.csproj">
+    <ProjectReference Include="..\Silverseed.RepoCop.csproj">
       <Project>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</Project>
-      <Name>Silverseed.SubversionHook</Name>
+      <Name>Silverseed.RepoCop</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

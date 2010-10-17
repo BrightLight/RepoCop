@@ -8,8 +8,8 @@
     <ProjectGuid>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Silverseed.SubversionHook</RootNamespace>
-    <AssemblyName>Silverseed.SubversionHook</AssemblyName>
+    <RootNamespace>Silverseed.RepoCop</RootNamespace>
+    <AssemblyName>Silverseed.RepoCop</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -16,7 +16,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
   /// <summary>
   /// A null implementation of <see cref="Instruction"/> that does nothing except 

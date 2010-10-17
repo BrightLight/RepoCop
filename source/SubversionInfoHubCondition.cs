@@ -16,9 +16,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
-  using Silverseed.ComponentModel;
+  using Silverseed.ComponentModel.Conditions;
   
   internal abstract class SubversionInfoHubCondition : Condition
   {

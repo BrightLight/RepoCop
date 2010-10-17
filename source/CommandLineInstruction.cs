@@ -15,7 +15,7 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Silverseed.SubversionHook
+namespace Silverseed.RepoCop
 {
   using System;
   using System.Diagnostics;

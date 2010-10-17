@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Silverseed.ComponentModel;
+using Silverseed.ComponentModel.Conditions;
 
-namespace Silverseed.SubversionHook.Xml
+namespace Silverseed.RepoCop.Xml
 {
   internal class ConditionsXmlHandler : ConditionXmlHandler<CombinedCondition>
   {

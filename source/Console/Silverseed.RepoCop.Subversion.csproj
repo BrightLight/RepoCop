@@ -8,8 +8,8 @@
     <ProjectGuid>{24207F82-238E-4B45-B1AE-9855D52DBAA9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Silverseed.SubversionHook.Console</RootNamespace>
-    <AssemblyName>Silverseed.SubversionHook.Console</AssemblyName>
+    <RootNamespace>Silverseed.RepoCop.Subversion</RootNamespace>
+    <AssemblyName>Silverseed.RepoCop.Subversion</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,9 +53,9 @@
     <Compile Include="SvnChangeItemWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Silverseed.SubversionHook.csproj">
+    <ProjectReference Include="..\Silverseed.RepoCop.csproj">
       <Project>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</Project>
-      <Name>Silverseed.SubversionHook</Name>
+      <Name>Silverseed.RepoCop</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

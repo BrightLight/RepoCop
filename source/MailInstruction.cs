@@ -82,30 +82,30 @@ namespace Silverseed.RepoCop
     private MailMessage BuildMailMessage()
     {
       var mailMessage = new MailMessage();
-      mailMessage.From = BuildMailAddress(SubversionInfoHub.Instance.ParseTokens(this.FromMailAddress));
+      mailMessage.From = BuildMailAddress(RepositoryInfoHub.Instance.ParseTokens(this.FromMailAddress));
       
-      var toMailAddresses = SubversionInfoHub.Instance.ParseTokens(this.ToMailAddresses);
+      var toMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.ToMailAddresses);
       if (!String.IsNullOrEmpty(toMailAddresses))
       {
         this.CheckMailAddresses(toMailAddresses);
         mailMessage.To.Add(toMailAddresses);
       }
 
-      var ccMailAddresses = SubversionInfoHub.Instance.ParseTokens(this.CcMailAddresses);
+      var ccMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.CcMailAddresses);
       if (!String.IsNullOrEmpty(ccMailAddresses))
       {
         this.CheckMailAddresses(ccMailAddresses);
         mailMessage.CC.Add(ccMailAddresses);
       }
 
-      var bccMailAddresses = SubversionInfoHub.Instance.ParseTokens(this.BccMailAddresses);
+      var bccMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.BccMailAddresses);
       if (!String.IsNullOrEmpty(bccMailAddresses))
       {
         this.CheckMailAddresses(bccMailAddresses);
         mailMessage.Bcc.Add(bccMailAddresses);
       }
 
-      mailMessage.Subject = SubversionInfoHub.Instance.ParseTokens(this.Subject);
+      mailMessage.Subject = RepositoryInfoHub.Instance.ParseTokens(this.Subject);
       if (!String.IsNullOrEmpty(this.BodyTemplateFile))
       {
         if (File.Exists(this.BodyTemplateFile))
@@ -126,8 +126,8 @@ namespace Silverseed.RepoCop
         }
       }
 
-      mailMessage.Body = SubversionInfoHub.Instance.ParseTokens(this.Body);
-      mailMessage.ReplyTo = BuildMailAddress(SubversionInfoHub.Instance.ParseTokens(this.ReplyToMailAddress));
+      mailMessage.Body = RepositoryInfoHub.Instance.ParseTokens(this.Body);
+      mailMessage.ReplyTo = BuildMailAddress(RepositoryInfoHub.Instance.ParseTokens(this.ReplyToMailAddress));
 
       return mailMessage;
     }

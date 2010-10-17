@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="AuthorCondition.cs" />
     <Compile Include="FailInstruction.cs" />
+    <Compile Include="RepositoryInfoHub.cs" />
+    <Compile Include="RepositoryInfoHubCondition.cs" />
     <Compile Include="Xml\HookConfigServiceLocator.cs" />
     <Compile Include="HookTypeCondition.cs" />
     <Compile Include="IMailServer.cs" />
@@ -74,8 +76,6 @@
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChangedPathCondition.cs" />
-    <Compile Include="SubversionInfoHub.cs" />
-    <Compile Include="SubversionInfoHubCondition.cs" />
     <Compile Include="Xml\MailInstructionXmlHandler.cs" />
     <Compile Include="Xml\SmtpServerXmlHandler.cs" />
   </ItemGroup>

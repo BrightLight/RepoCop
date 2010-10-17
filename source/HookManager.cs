@@ -45,7 +45,7 @@ namespace Silverseed.RepoCop
     public static bool Execute(IRepoChangeInfo repoChangeInfo)
     {
       var instructions = BuildInstructions();
-      SubversionInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
+      RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
       return instructions.Execute();
     }
 

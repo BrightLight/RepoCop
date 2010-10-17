@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SubversionInfoHub.cs" company="Silverseed.de">
+// <copyright file="RepositoryInfoHub.cs" company="Silverseed.de">
 //    (c) 2010 Markus Hastreiter @ Silverseed.de
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,18 +24,18 @@ namespace Silverseed.RepoCop
   using System.Globalization;
   using System.Text;
 
-  public class SubversionInfoHub : INotifyPropertyChanged
+  public class RepositoryInfoHub : INotifyPropertyChanged
   {
-    private static SubversionInfoHub instance;
+    private static RepositoryInfoHub instance;
 
     private IRepoChangeInfo repoChangeInfo;
 
     private readonly Dictionary<string, Func<string>> tokenDictionary = new Dictionary<string, Func<string>>();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SubversionInfoHub"/> class.
+    /// Initializes a new instance of the <see cref="RepositoryInfoHub"/> class.
     /// </summary>
-    public SubversionInfoHub()
+    public RepositoryInfoHub()
     {
       this.tokenDictionary.Add("#author#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Author : String.Empty);
       this.tokenDictionary.Add("#logmessage#", () => this.repoChangeInfo != null ? this.repoChangeInfo.LogMessage : String.Empty);
@@ -51,13 +51,13 @@ namespace Silverseed.RepoCop
 
     #endregion
 
-    public static SubversionInfoHub Instance
+    public static RepositoryInfoHub Instance
     {
       get
       {
         if (instance == null)
         {
-          instance = new SubversionInfoHub();
+          instance = new RepositoryInfoHub();
         }
 
         return instance;

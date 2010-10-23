@@ -24,13 +24,26 @@ namespace Silverseed.RepoCop
   using System.Globalization;
   using System.Text;
 
+  /// <summary>
+  /// A hub that stores the information about changes to the repository
+  /// and notifies registered instances about these changes.
+  /// </summary>
   public class RepositoryInfoHub : INotifyPropertyChanged
   {
+    /// <summary>
+    /// The replacement tokens supported by this <see cref="RepositoryInfoHub"/>.
+    /// </summary>
+    private readonly Dictionary<string, Func<string>> tokenDictionary = new Dictionary<string, Func<string>>();
+
+    /// <summary>
+    /// The singleton instance.
+    /// </summary>
     private static RepositoryInfoHub instance;
 
+    /// <summary>
+    /// The latest change to the repository.
+    /// </summary>
     private IRepoChangeInfo repoChangeInfo;
-
-    private readonly Dictionary<string, Func<string>> tokenDictionary = new Dictionary<string, Func<string>>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RepositoryInfoHub"/> class.
@@ -39,7 +52,9 @@ namespace Silverseed.RepoCop
     {
       this.tokenDictionary.Add("#author#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Author : String.Empty);
       this.tokenDictionary.Add("#logmessage#", () => this.repoChangeInfo != null ? this.repoChangeInfo.LogMessage : String.Empty);
+      this.tokenDictionary.Add("#prevrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision - 1).ToString(CultureInfo.InvariantCulture) : String.Empty);
       this.tokenDictionary.Add("#revision#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Revision.ToString(CultureInfo.InvariantCulture) : String.Empty);
+      this.tokenDictionary.Add("#nextrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision + 1).ToString(CultureInfo.InvariantCulture) : String.Empty);
       this.tokenDictionary.Add("#time#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Time.ToString(CultureInfo.CurrentCulture) : String.Empty);
       this.tokenDictionary.Add("#affectedfiles#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine));
       this.tokenDictionary.Add("#affectedpaths#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine));
@@ -47,10 +62,16 @@ namespace Silverseed.RepoCop
 
     #region INotifyPropertyChanged Members
 
+    /// <summary>
+    /// Occurs when a property value changes.
+    /// </summary>
     public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="RepositoryInfoHub"/>.
+    /// </summary>
     public static RepositoryInfoHub Instance
     {
       get
@@ -64,6 +85,9 @@ namespace Silverseed.RepoCop
       }
     }
 
+    /// <summary>
+    /// Gets or sets the latest change (commit) to the repository.
+    /// </summary>
     public IRepoChangeInfo RepoChangeInfo
     {
       get
@@ -81,6 +105,12 @@ namespace Silverseed.RepoCop
       }
     }
 
+    /// <summary>
+    /// Replaces all known tokens in the specified <paramref name="rawText"/> with their
+    /// current value and returns this "expanded" text.
+    /// </summary>
+    /// <param name="rawText">A text possibly containing replacedment tokens that should now be replaced with their actual values.</param>
+    /// <returns>The specified <paramref name="rawText"/> with all known replacement tokens replaced with their actual values.</returns>
     public string ParseTokens(string rawText)
     {
       string newText = rawText;
@@ -92,6 +122,10 @@ namespace Silverseed.RepoCop
       return newText;
     }
 
+    /// <summary>
+    /// Called when a property of this instance has changed.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that was changed.</param>
     private void OnNotifyPropertyChanged(string propertyName)
     {
       if (this.PropertyChanged != null)

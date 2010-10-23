@@ -24,9 +24,10 @@ namespace Silverseed.RepoCop
   {
     private readonly Regex logMessageRegExPattern;
 
-    public LogMessageCondition(string logMessageRegExPattern)
+    public LogMessageCondition(string logMessageRegExPattern, RegexOptions regexOptions)
     {
-      this.logMessageRegExPattern = new Regex(logMessageRegExPattern, RegexOptions.Compiled);
+      regexOptions |= RegexOptions.Compiled;
+      this.logMessageRegExPattern = new Regex(logMessageRegExPattern, regexOptions);
     }
 
     protected override void UpdateState(IRepoChangeInfo repoChangeInfo)

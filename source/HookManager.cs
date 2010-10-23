@@ -24,14 +24,29 @@ namespace Silverseed.RepoCop
   using Silverseed.ComponentModel.Xml;
   using Silverseed.RepoCop.Xml;
 
+  /// <summary>
+  /// Possible type of repository hooks.
+  /// </summary>
   public enum HookType
   {
+    /// <summary>
+    /// An undefined hook type.
+    /// </summary>
     Undefined,
 
+    /// <summary>
+    /// A start commit hook.
+    /// </summary>
     StartCommit,
 
+    /// <summary>
+    /// A pre-commit hook.
+    /// </summary>
     PreCommit,
 
+    /// <summary>
+    /// A post-commit hook.
+    /// </summary>
     PostCommit
   }
 
@@ -49,7 +64,7 @@ namespace Silverseed.RepoCop
       return instructions.Execute();
     }
 
-    private static Instruction BuildInstructions()
+    private static string FindHookConfigurationFile()
     {
       var configurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName);
       if (configurationFile.Contains(".vshost."))
@@ -57,7 +72,16 @@ namespace Silverseed.RepoCop
         configurationFile = configurationFile.Replace(".vshost.", ".");
       }
 
-      configurationFile = configurationFile + ".HookConfig.xml";
+      return configurationFile + ".HookConfig.xml";
+    }
+
+    /// <summary>
+    /// Builds the instructions according to the hook configuration file.
+    /// </summary>
+    /// <returns>A <see cref="MacroInstruction"/> containing all the defined instructions.</returns>
+    private static Instruction BuildInstructions()
+    {
+      var configurationFile = FindHookConfigurationFile();
       log.DebugFormat("Looking for configuration file {0}", configurationFile);
       if (File.Exists(configurationFile))
       {

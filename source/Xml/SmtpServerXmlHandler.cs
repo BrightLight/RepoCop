@@ -20,8 +20,8 @@ namespace Silverseed.RepoCop.Xml
 {
   using System;
   using System.Collections.Generic;
-  using Silverseed.ComponentModel;
-  using Silverseed.ComponentModel.Xml;
+  using Silverseed.Core;
+  using Silverseed.Core.Xml;
 
   internal class SmtpServerXmlHandler : NullXmlHandler
   {

@@ -19,8 +19,8 @@
 namespace Silverseed.RepoCop.Xml
 {
   using System.Collections.Generic;
-  using Silverseed.ComponentModel.Conditions;
-  using Silverseed.ComponentModel.Xml;
+  using Silverseed.Core.Conditions;
+  using Silverseed.Core.Xml;
 
   public abstract class ConditionXmlHandler<T> : NullXmlHandler
     where T : ICondition

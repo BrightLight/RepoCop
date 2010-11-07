@@ -19,7 +19,7 @@
 namespace Silverseed.RepoCop.Xml
 {
   using System.Collections.Generic;
-  using Silverseed.ComponentModel.Xml;
+  using Silverseed.Core.Xml;
 
   public abstract class InstructionXmlHandler : NullXmlHandler
   {

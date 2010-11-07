@@ -18,7 +18,7 @@
 
 namespace Silverseed.RepoCop
 {
-  using Silverseed.ComponentModel.Conditions;
+  using Silverseed.Core.Conditions;
 
   public abstract class Instruction
   {

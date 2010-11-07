@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silverseed.RepoCop.Subversi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silverseed.RepoCop.Tests", "Tests\Silverseed.RepoCop.Tests.csproj", "{8979F2C3-637E-4FF3-90FA-091373824CC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silverseed.ComponentModel", "..\..\ComponentModel\Silverseed.ComponentModel.csproj", "{88A0F03E-530A-415F-9174-438A80988684}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silverseed.Core", "..\..\ComponentModel\Silverseed.Core.csproj", "{88A0F03E-530A-415F-9174-438A80988684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

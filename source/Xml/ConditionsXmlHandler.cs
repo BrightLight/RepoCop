@@ -20,7 +20,7 @@ namespace Silverseed.RepoCop.Xml
 {
   using System;
   using System.Collections.Generic;
-  using Silverseed.ComponentModel.Conditions;
+  using Silverseed.Core.Conditions;
 
   internal class ConditionsXmlHandler : ConditionXmlHandler<CombinedCondition>
   {

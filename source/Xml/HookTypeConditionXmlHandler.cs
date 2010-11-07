@@ -19,7 +19,7 @@
 namespace Silverseed.RepoCop.Xml
 {
   using System.Collections.Generic;
-  using Silverseed.ComponentModel;
+  using Silverseed.Core;
 
   internal class HookTypeConditionXmlHandler : ConditionXmlHandler<HookTypeCondition>
   {

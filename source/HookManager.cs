@@ -21,7 +21,7 @@ namespace Silverseed.RepoCop
   using System;
   using System.IO;
   using log4net;
-  using Silverseed.ComponentModel.Xml;
+  using Silverseed.Core.Xml;
   using Silverseed.RepoCop.Xml;
 
   /// <summary>
@@ -56,6 +56,21 @@ namespace Silverseed.RepoCop
     /// A logger used by instances of this class.
     /// </summary>
     private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+    public static bool Validate()
+    {
+      try
+      {
+        BuildInstructions();
+      }
+      catch (Exception exception)
+      {
+        log.Error("Validating encountered an error. Please check log for details.", exception);
+        return false;
+      }
+
+      return true;
+    }
 
     public static bool Execute(IRepoChangeInfo repoChangeInfo)
     {
@@ -94,19 +109,12 @@ namespace Silverseed.RepoCop
           ObjectFactory.Instance.ObjectStack.Push(instructions);
           xmlHub.Process(configXmlStream);
 
-          if (ObjectFactory.Instance.ObjectStack.Count == 0)
+          if (ObjectFactory.Instance.ObjectStack.Count != 1)
           {
-            throw new NotSupportedException("Es wurden keine Instructions erzeugt.");
-          }
-
-          if (ObjectFactory.Instance.ObjectStack.Count > 1)
-          {
-            throw new NotSupportedException(
-              "Bei der Erstellung der Anweisungen kam es zu einem Fehler. Der interne ObjectStack wurde nicht komplett geleert.");
+            throw new NotSupportedException("Something went wrong while parsing the configuration file.");
           }
 
           return instructions;
-          ////return ObjectFactory.Instance.ObjectStack.Peek() as Instruction;
         }
       }
 

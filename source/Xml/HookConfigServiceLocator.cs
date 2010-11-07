@@ -18,8 +18,8 @@
 
 namespace Silverseed.RepoCop.Xml
 {
-  using Silverseed.ComponentModel;
-  using Silverseed.ComponentModel.Xml;
+  using Silverseed.Core;
+  using Silverseed.Core.Xml;
   
   /// <summary>
   /// Provides <see cref="IXmlHandler"/>s that can handle elements of of the repository hook XML configuration.

@@ -80,9 +80,9 @@
     <Compile Include="Xml\SmtpServerXmlHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ComponentModel\Silverseed.ComponentModel.csproj">
+    <ProjectReference Include="..\..\ComponentModel\Silverseed.Core.csproj">
       <Project>{88A0F03E-530A-415F-9174-438A80988684}</Project>
-      <Name>Silverseed.ComponentModel</Name>
+      <Name>Silverseed.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

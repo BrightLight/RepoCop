@@ -18,7 +18,7 @@
 
 namespace Silverseed.RepoCop
 {
-  using Silverseed.ComponentModel.Conditions;
+  using Silverseed.Core.Conditions;
   
   internal abstract class RepositoryInfoHubCondition : Condition
   {

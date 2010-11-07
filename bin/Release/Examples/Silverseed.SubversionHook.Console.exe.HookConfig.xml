@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<configuration>
+  <SmtpServer Host="localhost" />
+  <!-- Global instructions (always executed without regard of hook type) -->
+  <Instructions>
+  </Instructions>
+
+  <!-- Pre-Commit instructions -->
+  <Instructions>
+    <HookTypeCondition HookType="PreCommit" />
+	
+	<!-- Enforce log messages with at least 10 characters -->
+    <FailInstruction Message="Mind. 10 Zeichen erforderlich.">
+      <LogMessageCondition LogMessageRegExPattern=".{10}" Negate="True" />
+    </FailInstruction>
+	
+	<!-- Allow checkin of bmp and png files only with special tag [Add resource file] in commit log -->
+    <FailInstruction Message="Ressourcen (*.bmp, *.png) duerfen nur mit speziellem Tag hinzugefuegt werden">
+      <Conditions Type="And">
+        <LogMessageCondition LogMessageRegExPattern="\[Add Resx File\]" Negate="True" />
+        <ChangedPathCondition ChangedPathRegExPattern=".*\.(png|bmp)" Action="Add" />
+      </Conditions>
+    </FailInstruction>
+
+	<!-- Locked repo paths -->
+    <FailInstruction Message="The path /branches/version_1.1 is locked and may no longer be modified.">
+      <ChangedPathCondition ChangedPathRegExPattern=".*/branches/version_1\.1.*" />
+    </FailInstruction>
+  </Instructions>
+
+  <!-- Post-Commit instructions -->
+  <Instructions>
+    <HookTypeCondition HookType="PostCommit" />
+	
+	<!-- Send email reminder to user who modified "ImportantFile.txt" with further instructions -->
+	<MailInstruction FromMailAddress="svn@silverseed.de" ToMailAddresses="#author#@silverseed.de" Subject="Wichtige Datei geaendert" BodyTemplateFile="ImportantFileChangedMailBody.txt">
+      <ChangedPathCondition ChangedPathRegExPattern=".*/trunk/ImportantFile.txt" />	  
+	</MailInstruction>
+
+	<!-- Notify project leader about every change -->
+	<MailInstruction FromMailAddress="#author#@silverseed.de" ToMailAddresses="projectleader@silverseed.de" Subject="Svn ##revision#" Body="#logmessage#"/>
+
+	<!-- Perfom StyleCop check on checked-in files (only when file was added, modified or replaced, not when file was deleted) -->
+	<CommandLineInstruction FileName="" Arguments="#affectedfiles#">
+      <ChangedPathCondition ChangedPathRegExPattern=".*\.cs" Action="Add+Modify+Replace" />
+	</CommandLineInstruction >	
+  </Instructions>
+</configuration>

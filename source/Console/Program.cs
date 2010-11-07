@@ -37,48 +37,83 @@ namespace Silverseed.RepoCop.Subversion
       {
         ////args = new string[] { "pre", @"C:\temp\DummyRepo\", "kilgkfhb" };
         ////args = new string[] { "post-commit", @"C:\temp\repositories\dummy", "35" };
-        log.ErrorFormat("{0} started", AppDomain.CurrentDomain.FriendlyName);
+        log.DebugFormat("{0} started", AppDomain.CurrentDomain.FriendlyName);
         if (args.Length > 2)
         {
           log.DebugFormat("Argument0: [{0}] - Argument1: [{1}] - Argument2: [{2}]", args[0], args[1], args[2]);
         }
 
-        string hookTypeArgument = null;
+        string actionArgument = null;
         if (args.Length > 0)
         {
-          hookTypeArgument = args[0];
+          actionArgument = args[0];
         }
 
         IRepoChangeInfo repoChangeInfo = null;
         string repositoryPath;
-        switch (hookTypeArgument)
+        switch (actionArgument)
         {
-          case "start-commit":
-            repositoryPath = args[1];
-            var username = args[2];
-            var capabilities = args[3];
-            log.Debug("start-commit hook using these settings:");
-            log.DebugFormat("Repository path: [{0}]", repositoryPath);
-            log.DebugFormat("Username: [{0}]", username);
-            log.DebugFormat("Client capabilities: [{0}]", capabilities);
-            break;
-          case "pre-commit":
-            repositoryPath = args[1];
-            var transaction = args[2];
-            repoChangeInfo = GetPreCommitRepoChangeInfo(repositoryPath, transaction);
-            
-            break;
-          case "post-commit":
-            repositoryPath = args[1];
-            long revision;
-            if (Int64.TryParse(args[2], out revision))
+          case "validate":
+            if (HookManager.Validate())
             {
-              repoChangeInfo = GetPostCommitRepoChangeInfo(repositoryPath, revision);
+              Console.Out.WriteLine("Configuration file was successfully parsed.");
+              Environment.ExitCode = 0;
             }
             else
             {
-              System.Console.Error.WriteLine("Could not parse {0} as revision number.", args[2]);
-              Environment.ExitCode = 2;
+              Console.Out.WriteLine("Validation encountered an error. Please check log for details.");
+              Environment.ExitCode = 1;
+            }
+
+            break;
+          case "start-commit":
+            if (args.Length > 3)
+            {
+              repositoryPath = args[1];
+              var username = args[2];
+              var capabilities = args[3];
+              log.Debug("start-commit hook using these settings:");
+              log.DebugFormat("Repository path: [{0}]", repositoryPath);
+              log.DebugFormat("Username: [{0}]", username);
+              log.DebugFormat("Client capabilities: [{0}]", capabilities);
+            }
+            else
+            {
+              log.Error("Insufficient parameters for start-commit.");
+            }
+
+            break;
+          case "pre-commit":
+            if (args.Length > 2)
+            {
+              repositoryPath = args[1];
+              var transaction = args[2];
+              repoChangeInfo = GetPreCommitRepoChangeInfo(repositoryPath, transaction);
+            }
+            else
+            {
+              log.Error("Insufficient parameters for start-commit.");
+            }
+
+            break;
+          case "post-commit":
+            if (args.Length > 2)
+            {
+              repositoryPath = args[1];
+              long revision;
+              if (Int64.TryParse(args[2], out revision))
+              {
+                repoChangeInfo = GetPostCommitRepoChangeInfo(repositoryPath, revision);
+              }
+              else
+              {
+                System.Console.Error.WriteLine("Could not parse {0} as revision number.", args[2]);
+                Environment.ExitCode = 2;
+              }
+            }
+            else
+            {
+              log.Error("Insufficient parameters for start-commit.");
             }
 
             break;
@@ -95,10 +130,10 @@ namespace Silverseed.RepoCop.Subversion
           }
         }
       }
-      catch(Exception e)
+      catch (Exception e)
       {
-        Console.WriteLine("Es ist ein Fehler aufgetreten: {0}", e);
-        log.Error("Es ist ein Fehler aufgetreten", e);
+        Console.WriteLine("An error occured: {0}", e);
+        log.Error("An error occured", e);
       }
     }
 

@@ -10,14 +10,14 @@
     <HookTypeCondition HookType="PreCommit" />
 	
 	<!-- Enforce log messages with at least 10 characters -->
-    <FailInstruction Message="Mind. 10 Zeichen erforderlich.">
+    <FailInstruction Message="Log messages require at least 10 characters.">
       <LogMessageCondition LogMessageRegExPattern=".{10}" Negate="True" />
     </FailInstruction>
 	
 	<!-- Allow checkin of bmp and png files only with special tag [Add resource file] in commit log -->
-    <FailInstruction Message="Ressourcen (*.bmp, *.png) duerfen nur mit speziellem Tag hinzugefuegt werden">
+    <FailInstruction Message="Resource files of type *.bmp and *.png may only be added if the tag [adding resource] is supplied with the commit message.">
       <Conditions Type="And">
-        <LogMessageCondition LogMessageRegExPattern="\[Add Resx File\]" Negate="True" />
+        <LogMessageCondition LogMessageRegExPattern="\[adding resource\]" Negate="True" />
         <ChangedPathCondition ChangedPathRegExPattern=".*\.(png|bmp)" Action="Add" />
       </Conditions>
     </FailInstruction>
@@ -33,12 +33,12 @@
     <HookTypeCondition HookType="PostCommit" />
 	
 	<!-- Send email reminder to user who modified "ImportantFile.txt" with further instructions -->
-	<MailInstruction FromMailAddress="svn@silverseed.de" ToMailAddresses="#author#@silverseed.de" Subject="Wichtige Datei geaendert" BodyTemplateFile="ImportantFileChangedMailBody.txt">
+	<MailInstruction FromMailAddress="repocop@mydomain.com" ToMailAddresses="#author#@mydomain.com" Subject="You have changed an important file" BodyTemplateFile="ImportantFileChangedMailBody.txt">
       <ChangedPathCondition ChangedPathRegExPattern=".*/trunk/ImportantFile.txt" />	  
 	</MailInstruction>
 
 	<!-- Notify project leader about every change -->
-	<MailInstruction FromMailAddress="#author#@silverseed.de" ToMailAddresses="projectleader@silverseed.de" Subject="Svn ##revision#" Body="#logmessage#"/>
+	<MailInstruction FromMailAddress="#author#@mydomain.com" ToMailAddresses="projectleader@mydomain.com" Subject="Svn ##revision#" Body="#logmessage#"/>
 
 	<!-- Perfom StyleCop check on checked-in files (only when file was added, modified or replaced, not when file was deleted) -->
 	<CommandLineInstruction FileName="" Arguments="#affectedfiles#">

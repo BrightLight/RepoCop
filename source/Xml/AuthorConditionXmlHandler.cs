@@ -21,10 +21,13 @@ namespace Silverseed.RepoCop.Xml
   using System;
   using System.Collections.Generic;
   using System.Linq;
+  using Silverseed.Core;
 
   internal class AuthorConditionXmlHandler : ConditionXmlHandler<AuthorCondition>
   {
-    private string separator = ";";
+    private const string DefaultSeparator = ";";
+
+    private string separator = DefaultSeparator;
 
     public override void ProcessText(string value)
     {
@@ -38,7 +41,7 @@ namespace Silverseed.RepoCop.Xml
 
     protected override AuthorCondition CreateCondition(Dictionary<string, string> attributes)
     {
-      attributes.TryGetValue("Separator", out separator);
+      this.separator = attributes.GetValueOrDefault("Separator", DefaultSeparator);
       return new AuthorCondition(String.Empty);
     }
   }

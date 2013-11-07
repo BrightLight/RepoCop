@@ -22,9 +22,9 @@ namespace Silverseed.RepoCop.Xml
   using System.Collections.Generic;
   using Silverseed.Core.Conditions;
 
-  internal class ConditionsXmlHandler : ConditionXmlHandler<CombinedCondition>
+  internal class ConditionsXmlHandler : ConditionXmlHandler<CompositeCondition>
   {
-    protected override CombinedCondition CreateCondition(Dictionary<string, string> attributes)
+    protected override CompositeCondition CreateCondition(Dictionary<string, string> attributes)
     {
       string combinationType;
       if (attributes.TryGetValue("Type", out combinationType))

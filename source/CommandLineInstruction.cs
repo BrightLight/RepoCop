@@ -36,6 +36,7 @@ namespace Silverseed.RepoCop
     {
       this.TimeoutInMilliseconds = 60000; // 60s
       this.ExpectedExitCode = 0;
+      this.NewLineReplacement = " ";
       this.StandardOutput = Console.Out;
       this.ErrorOutput = Console.Error;
     }
@@ -63,7 +64,7 @@ namespace Silverseed.RepoCop
       processStartInfo.RedirectStandardOutput = true;
       processStartInfo.RedirectStandardError = true;
       processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
-      processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments);
+      processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
 
       var process = new Process();
       process.StartInfo = processStartInfo;
@@ -111,6 +112,8 @@ namespace Silverseed.RepoCop
     public string Arguments { get; set; }
 
     public int ExpectedExitCode { get; set; }
+
+    public string NewLineReplacement { get; set; }
 
     private TextWriter StandardOutput { get; set; }
 

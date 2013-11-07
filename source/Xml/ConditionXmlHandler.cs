@@ -43,7 +43,7 @@ namespace Silverseed.RepoCop.Xml
       var currentInstruction = ObjectFactory.Instance.ObjectStack.Peek() as Instruction;
       if (currentInstruction != null)
       {
-        var combinedCondition = currentInstruction.Condition as CombinedCondition;
+        var combinedCondition = currentInstruction.Condition as CompositeCondition;
         if (combinedCondition != null)
         {
           combinedCondition.Add(condition);

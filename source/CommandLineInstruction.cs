@@ -55,9 +55,9 @@ namespace Silverseed.RepoCop
       }
     }
 
-    protected override bool InternalExecute()
+    protected ProcessStartInfo CreateProcessStartInfo()
     {
-      ProcessStartInfo processStartInfo = new ProcessStartInfo();
+      var processStartInfo = new ProcessStartInfo();
       processStartInfo.ErrorDialog = false;
       processStartInfo.CreateNoWindow = true;
       processStartInfo.UseShellExecute = false;
@@ -65,7 +65,12 @@ namespace Silverseed.RepoCop
       processStartInfo.RedirectStandardError = true;
       processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
       processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
+      return processStartInfo;
+    }
 
+    protected override bool InternalExecute()
+    {
+      var processStartInfo = this.CreateProcessStartInfo();
       var process = new Process();
       process.StartInfo = processStartInfo;
       process.OutputDataReceived += this.process_OutputDataReceived;
@@ -113,6 +118,9 @@ namespace Silverseed.RepoCop
 
     public int ExpectedExitCode { get; set; }
 
+    /// <summary>
+    /// A character or string which will replace <see cref="Environment.NewLine"/> in the executed command line.
+    /// </summary>
     public string NewLineReplacement { get; set; }
 
     private TextWriter StandardOutput { get; set; }

@@ -24,6 +24,7 @@ namespace Silverseed.RepoCop.Tests
   using System.Linq;
   using System.Text;
   using NUnit.Framework;
+  using System.Diagnostics;
 
   [TestFixture]
   public class CommandLineInstructionTests
@@ -92,6 +93,30 @@ namespace Silverseed.RepoCop.Tests
       memoryStream.Position = 0;
       var streamReader = new StreamReader(memoryStream);
       Assert.AreEqual(errorParameterText, streamReader.ReadToEnd().Trim());
+    }
+
+    [Test]
+    public void NewLinesAreReplacedWithEmptySpace()
+    {
+      var commandLineInstruction = new CommandLineInstructionTest();
+      commandLineInstruction.FileName = "Foo";
+      commandLineInstruction.Arguments = "first line" + Environment.NewLine + "second line" + Environment.NewLine + "third line";
+      var processStartInfo = commandLineInstruction.CreateProcessStartInfo();
+      Assert.That(processStartInfo, Is.Not.Null);
+      Assert.That(processStartInfo.Arguments, Is.EqualTo("first line second line third line"));
+    }
+    
+    private class CommandLineInstructionTest : CommandLineInstruction
+    {
+      protected override bool InternalExecute()
+      {
+        return base.InternalExecute();
+      }
+
+      public ProcessStartInfo CreateProcessStartInfo()
+      {
+        return base.CreateProcessStartInfo();
+      }
     }
   }
 }

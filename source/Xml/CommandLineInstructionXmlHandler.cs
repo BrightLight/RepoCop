@@ -37,17 +37,18 @@ namespace Silverseed.RepoCop.Xml
     protected override Instruction CreateInstruction(Dictionary<string, string> attributes)
     {
       this.executeInstruction = new CommandLineInstruction();
-      this.executeInstruction.FileName = attributes.GetValueOrDefault("FileName", String.Empty);
-      this.executeInstruction.Arguments = attributes.GetValueOrDefault("Arguments", String.Empty);
+      this.executeInstruction.FileName = attributes.GetValueOrDefault("FileName", string.Empty);
+      this.executeInstruction.Arguments = attributes.GetValueOrDefault("Arguments", string.Empty);
+      this.executeInstruction.NewLineReplacement = attributes.GetValueOrDefault("NewLineReplacement", string.Empty);
       
       int timeoutInMilliseconds;
-      if (Int32.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", String.Empty), out timeoutInMilliseconds))
+      if (int.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", string.Empty), out timeoutInMilliseconds))
       {
         this.executeInstruction.TimeoutInMilliseconds = timeoutInMilliseconds;
       }
 
       int expectedExitCode;
-      if (Int32.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", String.Empty), out expectedExitCode))
+      if (int.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", string.Empty), out expectedExitCode))
       {
         this.executeInstruction.ExpectedExitCode = expectedExitCode;
       }

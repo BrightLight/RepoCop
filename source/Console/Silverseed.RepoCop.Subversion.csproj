@@ -34,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
@@ -42,7 +43,7 @@
     </Reference>
     <Reference Include="SharpSvn, Version=1.6006.1373.40218, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\SharpSvn\SharpSvn.dll</HintPath>
+      <HintPath>..\..\lib\SharpSvn\x86\SharpSvn.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

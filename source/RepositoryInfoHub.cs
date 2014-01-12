@@ -116,10 +116,28 @@ namespace Silverseed.RepoCop
       string newText = rawText;
       foreach (var token in this.tokenDictionary)
       {
-        newText = newText.Replace(token.Key, token.Value());
+        if (newText.Contains(token.Key))
+        {
+          newText = newText.Replace(token.Key, token.Value());
+        }
       }
 
       return newText;
+    }
+
+    /// <summary>
+    /// Registers a <paramref name="valueFunc"/> for the specified replacement <paramref name="token"/>.
+    /// </summary>
+    /// <param name="token">The name of the replacement token that is registered.</param>
+    /// <param name="valueFunc">A function that returns the replacement value for the specified <paramref name="token"/>.</param>
+    public void AddToken(string token, Func<string> valueFunc)
+    {
+      this.tokenDictionary.Add(token, valueFunc);
+    }
+
+    internal static void Flush()
+    {
+      instance = null;
     }
 
     /// <summary>

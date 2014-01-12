@@ -113,7 +113,7 @@ namespace Silverseed.RepoCop.Tests
         return base.InternalExecute();
       }
 
-      public ProcessStartInfo CreateProcessStartInfo()
+      new public ProcessStartInfo CreateProcessStartInfo()
       {
         return base.CreateProcessStartInfo();
       }

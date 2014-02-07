@@ -65,6 +65,12 @@ namespace Silverseed.RepoCop
       processStartInfo.RedirectStandardError = true;
       processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
       processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
+
+      log.DebugFormat("FileName (Unprocessed): [{0}]", this.FileName);
+      log.DebugFormat("FileName (Processed): [{0}]", processStartInfo.FileName);
+      log.DebugFormat("Arguments (Unprocessed): [{0}]", this.Arguments);
+      log.DebugFormat("Arguments (Processed): [{0}]", processStartInfo.Arguments);
+
       return processStartInfo;
     }
 
@@ -102,11 +108,13 @@ namespace Silverseed.RepoCop
 
     private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
+      log.Debug(e.Data);
       this.StandardOutput.Write(e.Data);
     }
 
     private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
+      log.Error(e.Data);
       this.ErrorOutput.Write(e.Data);
     }
 

@@ -54,18 +54,30 @@ namespace Silverseed.RepoCop.Xml
 
       if (string.IsNullOrEmpty(regExPattern))
       {
-        RepositoryInfoHub.Instance.AddToken(tokenName, () => value);
+        RepositoryInfoHub.Instance.AddToken(tokenName, () => 
+          {
+            log.DebugFormat("Setting custom replacement token {0} to [{1}]", tokenName, value);
+            return value;
+          });
       }
       else
       {
         var regex = new Regex(regExPattern, RegexOptions.Compiled);
         RepositoryInfoHub.Instance.AddToken(tokenName, () =>
           {
-            var match = regex.Match(RepositoryInfoHub.Instance.ParseTokens(value));
-            if ((match != null)
-              && (match.Groups.Count > 1))
+            var input = RepositoryInfoHub.Instance.ParseTokens(value);
+            log.DebugFormat("Preparing custom replacement token {0}", tokenName);
+            log.DebugFormat("Value: [{0}]", value);
+            log.DebugFormat("Processses value: [{0}]", input);
+            var match = regex.Match(input);
+            if (match != null)
             {
-              return match.Groups[1].Value;
+              log.DebugFormat("RegEx group count: {0}", match.Groups.Count);
+              if (match.Groups.Count > 1)
+              {
+                log.DebugFormat("Setting custom replacement token {0} to [{1}]", tokenName, match.Groups[1].Value);
+                return match.Groups[1].Value;
+              }
             }
 
             return string.Empty;

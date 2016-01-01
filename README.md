@@ -12,3 +12,5 @@ A commit was denied because the commit message was too short (or none was specif
 
 A commit was done to a locked part of the repository were no further changes are allowed.
 ![commit was denied because of locked part of repository](http://download-codeplex.sec.s-msft.com/Download?ProjectName=repocop&DownloadId=166784)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/hu87q37wr17i11rs?svg=true)](https://ci.appveyor.com/project/MarkusHastreiter/repocop)

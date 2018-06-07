@@ -26,8 +26,7 @@ namespace Silverseed.RepoCop.Xml
   {
     protected override CompositeCondition CreateCondition(Dictionary<string, string> attributes)
     {
-      string combinationType;
-      if (attributes.TryGetValue("Type", out combinationType))
+      if (attributes.TryGetValue("Type", out var combinationType))
       {
         switch (combinationType)
         {
@@ -39,6 +38,13 @@ namespace Silverseed.RepoCop.Xml
       }
 
       return new AndCondition(false);
+    }
+
+    public override void ProcessEndElement(string name)
+    {
+      ObjectFactory.Instance.ObjectStack.Pop();
+      
+      base.ProcessEndElement(name);
     }
   }
 }

@@ -40,18 +40,19 @@ namespace Silverseed.RepoCop.Xml
         }
       }
 
-      var currentInstruction = ObjectFactory.Instance.ObjectStack.Peek() as Instruction;
-      if (currentInstruction != null)
+      switch (ObjectFactory.Instance.ObjectStack.Peek())
       {
-        var combinedCondition = currentInstruction.Condition as CompositeCondition;
-        if (combinedCondition != null)
-        {
-          combinedCondition.Add(condition);
-        }
-        else
-        {
-          currentInstruction.Condition = condition;
-        }
+        case Instruction instruction:
+          instruction.Condition = condition;
+          break;
+        case CompositeCondition compositeCondition:
+          compositeCondition.Add(condition);
+          break;
+      }
+
+      if (condition is CompositeCondition)
+      {
+        ObjectFactory.Instance.ObjectStack.Push(condition);
       }
 
       base.ProcessStartElement(name, attributes);

@@ -2667,7 +2667,7 @@ specifies a <see cref="T:SharpSvn.SvnPathTarget" /></summary>
       <threadsafety static="true" instance="false" />
     </member>
     <member name="F:SharpSvn.Implementation.SvnSshOverride.ForceInternalAfterConfig">
-      <summary>Like ForceSharpPlink, but checks TortoiseSVN config first</summary>
+      <summary>Like ForceInternal, but checks TortoiseSVN config first</summary>
     </member>
     <member name="F:SharpSvn.Implementation.SvnSshOverride.ForceSharpPlinkAfterConfig">
       <summary>Like ForceSharpPlink, but checks TortoiseSVN config first</summary>
@@ -2679,7 +2679,7 @@ specifies a <see cref="T:SharpSvn.SvnPathTarget" /></summary>
       <summary>Use internal SSH client (currently based on LibSSH2)</summary>
     </member>
     <member name="F:SharpSvn.Implementation.SvnSshOverride.Disabled">
-      <summary>Disable all SSH support. Fall back to Subversion conflict</summary>
+      <summary>Disable all SSH support. Fall back to Subversion config</summary>
     </member>
     <member name="F:SharpSvn.Implementation.SvnSshOverride.Automatic">
       <summary>Automatic handling: Similar to ForceInternalAfterConfig</summary>

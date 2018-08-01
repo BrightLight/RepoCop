@@ -63,8 +63,8 @@ D   trunk/vendors/baker/bread.txt";
 
       var items = SvnLook.ParseAffectedItems(changedString);
       Assert.True(items.Count == 2);
-      Assert.True(items.Any(x => x.Path == "trunk/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
-      Assert.True(items.Any(x => x.Path == "trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Replace && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Replace && x.NodeKind == RepositoryItemNodeKind.File));
     }
   }
 }

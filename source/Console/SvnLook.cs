@@ -153,13 +153,13 @@ namespace Silverseed.RepoCop.Subversion
           path = parsedPath;
 
           // in case the item has already been added as delete item, remove it and replace it by the "replace" item
-          var alreadyInList = items.FirstOrDefault(x => x.Path == path);
+          var alreadyInList = items.FirstOrDefault(x => x.Path == $"/{path}");
           if (alreadyInList != null)
           {
             items.Remove(alreadyInList);
           }
         }
-        else if (items.Any(x => x.Path == path))
+        else if (items.Any(x => x.Path == $"/{path}"))
         {
           continue;
         }

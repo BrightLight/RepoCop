@@ -21,7 +21,6 @@ namespace Silverseed.RepoCop.Subversion
   using System;
   using System.IO;
   using log4net;
-  using SharpSvn;
 
   class Program
   {
@@ -29,6 +28,8 @@ namespace Silverseed.RepoCop.Subversion
     /// A logger used by instances of this class.
     /// </summary>
     private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+    private const string SvnBinParamKey = "-svnbin";
 
     static void Main(string[] args)
     {
@@ -47,6 +48,12 @@ namespace Silverseed.RepoCop.Subversion
         if (args.Length > 0)
         {
           actionArgument = args[0];
+        }
+
+        if (!ProcessParameters(args))
+        {
+          Environment.ExitCode = 1;
+          return;
         }
 
         IRepoChangeInfo repoChangeInfo = null;
@@ -137,8 +144,38 @@ namespace Silverseed.RepoCop.Subversion
       }
     }
 
+    private static bool ProcessParameters(params string[] args)
+    {
+      const int CustomParamStartIndex = 3;
+
+      if (args.Length < CustomParamStartIndex + 1)
+      {
+        return true;
+      }
+
+      for (var i = CustomParamStartIndex; i < args.Length; i++)
+      {
+        // get custom SVN binary folder from command line
+        if (args[i].StartsWith(SvnBinParamKey, StringComparison.InvariantCultureIgnoreCase) && i + 1 < args.Length)
+        {
+          // the param indicates that the next argument contains the actual value
+          var svnbin = args[i + 1];
+          if (!Directory.Exists(svnbin))
+          {
+            Environment.ExitCode = 1;
+            log.Error($"The specified svn binary folder '{svnbin}' doesn't exist!");
+            return false;
+          }
+
+          SvnLook.SetSvnBinFolder(svnbin);
+        }
+      }
+
+      return true;
+    }
+
     /// <summary>
-    /// Initialize log4ne.
+    /// Initialize log4net.
     /// </summary>
     private static void InitializeLog4Net()
     {
@@ -161,30 +198,12 @@ namespace Silverseed.RepoCop.Subversion
 
     private static IRepoChangeInfo GetPreCommitRepoChangeInfo(string repositoryPath, string transactionName)
     {
-      // SvnInfo ermitteln
-      var svnLookClient = new SvnLookClient();
-      var svnLookOrigin = new SvnLookOrigin(repositoryPath, transactionName);
-      SvnChangeInfoEventArgs svnChangeInfoEventArgs;
-      if (svnLookClient.GetChangeInfo(svnLookOrigin, out svnChangeInfoEventArgs))
-      {
-        return new SvnChangeInfoEventArgsWrapper(HookType.PreCommit, svnChangeInfoEventArgs);
-      }
-
-      return null;
+      return SvnLook.Transaction(HookType.PreCommit, repositoryPath, transactionName);
     }
 
     private static IRepoChangeInfo GetPostCommitRepoChangeInfo(string repositoryPath, long revision)
     {
-      // SvnInfo ermitteln
-      var svnLookClient = new SvnLookClient();
-      var svnLookOrigin = new SvnLookOrigin(repositoryPath, revision);
-      SvnChangeInfoEventArgs svnChangeInfoEventArgs;
-      if (svnLookClient.GetChangeInfo(svnLookOrigin, out svnChangeInfoEventArgs))
-      {
-        return new SvnChangeInfoEventArgsWrapper(HookType.PostCommit, svnChangeInfoEventArgs);
-      }
-
-      return null;
+      return SvnLook.Revision(HookType.PostCommit, repositoryPath, revision);
     }
   }
 }

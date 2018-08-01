@@ -26,7 +26,6 @@ namespace Silverseed.RepoCop
   public interface IRepoChangeInfo
   {
     HookType HookType { get; }
-    long BaseRevision { get; }
     string Author { get; }
     string LogMessage { get; }
     long Revision { get; }
@@ -37,11 +36,8 @@ namespace Silverseed.RepoCop
   public interface IRepoAffectedItem
   {
     RepositoryItemAction Action { get; }
-    string CopyFromPath { get; }
-    long CopyFromRevision { get; }
     RepositoryItemNodeKind NodeKind { get; }
     string Path { get; }
-    Uri RepositoryPath { get; }
   }
 
   public enum RepositoryItemAction

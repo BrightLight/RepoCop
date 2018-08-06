@@ -85,28 +85,28 @@ namespace Silverseed.RepoCop
       mailMessage.From = BuildMailAddress(RepositoryInfoHub.Instance.ParseTokens(this.FromMailAddress));
       
       var toMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.ToMailAddresses);
-      if (!String.IsNullOrEmpty(toMailAddresses))
+      if (!string.IsNullOrEmpty(toMailAddresses))
       {
         this.CheckMailAddresses(toMailAddresses);
         mailMessage.To.Add(toMailAddresses);
       }
 
       var ccMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.CcMailAddresses);
-      if (!String.IsNullOrEmpty(ccMailAddresses))
+      if (!string.IsNullOrEmpty(ccMailAddresses))
       {
         this.CheckMailAddresses(ccMailAddresses);
         mailMessage.CC.Add(ccMailAddresses);
       }
 
       var bccMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.BccMailAddresses);
-      if (!String.IsNullOrEmpty(bccMailAddresses))
+      if (!string.IsNullOrEmpty(bccMailAddresses))
       {
         this.CheckMailAddresses(bccMailAddresses);
         mailMessage.Bcc.Add(bccMailAddresses);
       }
 
       mailMessage.Subject = RepositoryInfoHub.Instance.ParseTokens(this.Subject);
-      if (!String.IsNullOrEmpty(this.BodyTemplateFile))
+      if (!string.IsNullOrEmpty(this.BodyTemplateFile))
       {
         if (File.Exists(this.BodyTemplateFile))
         {
@@ -127,7 +127,12 @@ namespace Silverseed.RepoCop
       }
 
       mailMessage.Body = RepositoryInfoHub.Instance.ParseTokens(this.Body);
-      mailMessage.ReplyTo = BuildMailAddress(RepositoryInfoHub.Instance.ParseTokens(this.ReplyToMailAddress));
+      var replyToMailAddresses = RepositoryInfoHub.Instance.ParseTokens(this.ReplyToMailAddress);
+      if (!string.IsNullOrEmpty(replyToMailAddresses))
+      {
+        this.CheckMailAddresses(replyToMailAddresses);
+        mailMessage.ReplyToList.Add(replyToMailAddresses);
+      }
 
       return mailMessage;
     }

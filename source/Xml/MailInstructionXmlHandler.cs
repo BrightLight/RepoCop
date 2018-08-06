@@ -28,7 +28,8 @@ namespace Silverseed.RepoCop.Xml
     {
       var mailInstruction = new MailInstruction();
       mailInstruction.Body = attributes.GetValueOrDefault("Body", String.Empty);
-      mailInstruction.BodyTemplateFile = attributes.GetValueOrDefault("BodyTemplateFile", String.Empty);      
+      var bodyTemplateFile = attributes.GetValueOrDefault("BodyTemplateFile", String.Empty);
+      mailInstruction.BodyTemplateFile = Environment.ExpandEnvironmentVariables(bodyTemplateFile);
       mailInstruction.BccMailAddresses = attributes.GetValueOrDefault("BccMailAddresses", String.Empty);
       mailInstruction.CcMailAddresses = attributes.GetValueOrDefault("CcMailAddresses", String.Empty);
       mailInstruction.FromMailAddress = attributes.GetValueOrDefault("FromMailAddress", String.Empty);

@@ -20,6 +20,7 @@ namespace Silverseed.RepoCop.Xml
 {
   using System;
   using System.Collections.Generic;
+  using System.Runtime.Hosting;
   using Silverseed.Core;
 
   internal class CommandLineInstructionXmlHandler : InstructionXmlHandler
@@ -37,8 +38,10 @@ namespace Silverseed.RepoCop.Xml
     protected override Instruction CreateInstruction(Dictionary<string, string> attributes)
     {
       this.executeInstruction = new CommandLineInstruction();
-      this.executeInstruction.FileName = attributes.GetValueOrDefault("FileName", string.Empty);
-      this.executeInstruction.Arguments = attributes.GetValueOrDefault("Arguments", string.Empty);
+      var fileName = attributes.GetValueOrDefault("FileName", string.Empty);
+      this.executeInstruction.FileName = Environment.ExpandEnvironmentVariables(fileName);
+      var arguments = attributes.GetValueOrDefault("Arguments", string.Empty);
+      this.executeInstruction.Arguments = Environment.ExpandEnvironmentVariables(arguments);
       this.executeInstruction.NewLineReplacement = attributes.GetValueOrDefault("NewLineReplacement", string.Empty);
       
       int timeoutInMilliseconds;

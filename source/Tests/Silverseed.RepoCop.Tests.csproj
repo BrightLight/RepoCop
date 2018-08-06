@@ -64,8 +64,13 @@
     <Compile Include="CommandLineInstructionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplacementTokenXmlHandlerTests.cs" />
+    <Compile Include="SvnLookTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Console\Silverseed.RepoCop.Subversion.csproj">
+      <Project>{24207f82-238e-4b45-b1ae-9855d52dbaa9}</Project>
+      <Name>Silverseed.RepoCop.Subversion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Silverseed.RepoCop.csproj">
       <Project>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</Project>
       <Name>Silverseed.RepoCop</Name>

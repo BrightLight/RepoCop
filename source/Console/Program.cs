@@ -54,9 +54,10 @@ namespace Silverseed.RepoCop.Subversion
         switch (actionArgument)
         {
           case "validate":
-            if (HookManager.Validate())
+            if (HookManager.Validate(out var text))
             {
               Console.Out.WriteLine("Configuration file was successfully parsed.");
+              Console.Out.WriteLine(text);
               Environment.ExitCode = 0;
             }
             else

@@ -18,6 +18,8 @@
 
 namespace Silverseed.RepoCop
 {
+  using System;
+
   internal class MacroInstruction : Instruction
   {
     private System.Collections.Generic.List<Instruction> instructions = new System.Collections.Generic.List<Instruction>();
@@ -32,6 +34,17 @@ namespace Silverseed.RepoCop
       bool overallResult = true;
       this.instructions.ForEach(x => overallResult &= x.Execute());
       return overallResult;
+    }
+
+    public override string ToString()
+    {
+      var text = base.ToString();
+      foreach (var instruction in this.instructions)
+      {
+        text += Environment.NewLine + "  " + instruction;
+      }
+
+      return text;
     }
   }
 }

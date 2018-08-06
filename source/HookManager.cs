@@ -57,19 +57,20 @@ namespace Silverseed.RepoCop
     /// </summary>
     private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-    public static bool Validate()
+    public static bool Validate(out string instructionsAsText)
     {
       try
       {
-        BuildInstructions();
+        var instructions = BuildInstructions();
+        instructionsAsText = instructions.ToString();
+        return true;
       }
       catch (Exception exception)
       {
         log.Error("Validating encountered an error. Please check log for details.", exception);
+        instructionsAsText = null;
         return false;
       }
-
-      return true;
     }
 
     public static bool Execute(IRepoChangeInfo repoChangeInfo)

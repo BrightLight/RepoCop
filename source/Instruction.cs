@@ -18,6 +18,7 @@
 
 namespace Silverseed.RepoCop
 {
+  using System;
   using Silverseed.Core.Conditions;
 
   public abstract class Instruction
@@ -52,5 +53,11 @@ namespace Silverseed.RepoCop
     }
 
     protected abstract bool InternalExecute();
+
+    public override string ToString()
+    {
+      var text = base.ToString() + Environment.NewLine + "  " + (this.condition != null ? this.condition.ToString() : "<no condition>");
+      return text;
+    }
   }
 }

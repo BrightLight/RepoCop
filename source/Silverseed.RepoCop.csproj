@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorCondition.cs" />
+    <Compile Include="ExecutionMode.cs" />
     <Compile Include="FailInstruction.cs" />
     <Compile Include="RepositoryInfoHub.cs" />
     <Compile Include="RepositoryInfoHubCondition.cs" />

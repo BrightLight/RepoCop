@@ -34,6 +34,7 @@ namespace Silverseed.RepoCop
     /// </summary>
     public CommandLineInstruction()
     {
+      this.ExecutionMode = ExecutionMode.WaitForExit;
       this.TimeoutInMilliseconds = 60000; // 60s
       this.ExpectedExitCode = 0;
       this.NewLineReplacement = " ";
@@ -75,6 +76,31 @@ namespace Silverseed.RepoCop
     }
 
     protected override bool InternalExecute()
+    {
+      if (this.ExecutionMode == ExecutionMode.WaitForExit)
+      {
+        return this.ExecuteWaitForExitInstruction();
+      }
+
+      if (this.ExecutionMode == ExecutionMode.FireAndForget)
+      {
+        return this.ExecuteFireAndForgetInstruction();
+      }
+
+      log.ErrorFormat("Could not process commandline instruction [{0}]!\nUnsupported execution mode [{1}]", this.FileName, this.ExecutionMode);
+      return false;
+    }
+
+    private bool ExecuteFireAndForgetInstruction()
+    {
+      var processStartInfo = new ProcessStartInfo();
+      processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
+      processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
+      Process.Start(processStartInfo);
+      return true;
+    }
+
+    private bool ExecuteWaitForExitInstruction()
     {
       var processStartInfo = this.CreateProcessStartInfo();
       var process = new Process();
@@ -125,6 +151,8 @@ namespace Silverseed.RepoCop
     public string Arguments { get; set; }
 
     public int ExpectedExitCode { get; set; }
+
+    public ExecutionMode ExecutionMode { get; set; }
 
     /// <summary>
     /// A character or string which will replace <see cref="Environment.NewLine"/> in the executed command line.

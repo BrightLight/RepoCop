@@ -56,6 +56,11 @@ namespace Silverseed.RepoCop.Xml
         this.executeInstruction.ExpectedExitCode = expectedExitCode;
       }
 
+      if(Enum.TryParse(attributes.GetValueOrDefault("ExecutionMode", string.Empty), true, out ExecutionMode executionMode))
+      {
+        this.executeInstruction.ExecutionMode = executionMode;
+      }
+
       return this.executeInstruction;
     }
   }

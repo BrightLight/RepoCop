@@ -23,6 +23,7 @@ namespace Silverseed.RepoCop.Subversion
   using System.Diagnostics;
   using System.IO;
   using System.Linq;
+  using System.Text;
   using System.Text.RegularExpressions;
   using log4net;
 
@@ -247,6 +248,10 @@ namespace Silverseed.RepoCop.Subversion
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
+
+        // force to use default encoding since svnlook always uses the system's default encoding for its output
+        process.StartInfo.StandardOutputEncoding = Encoding.Default;
+        process.StartInfo.StandardErrorEncoding = Encoding.Default;
         if (CustomSvnBinFolder)
         {
           process.StartInfo.FileName = Path.Combine(svnBinFolder, "svnlook.exe");

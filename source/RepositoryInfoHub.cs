@@ -162,6 +162,12 @@ namespace Silverseed.RepoCop
       var stringBuilder = new StringBuilder();
       foreach (var item in this.repoChangeInfo.AffectedItems)
       {
+        // files that are not related to a repository action were parsed from merge information and contain the original file that wasn't actually changed by the commit
+        if(item.Action == RepositoryItemAction.None)
+        {
+          continue;
+        }
+
         if ((nodeKind == RepositoryItemNodeKind.Unknown) 
           || (item.NodeKind == nodeKind))
         {

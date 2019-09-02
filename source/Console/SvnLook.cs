@@ -118,15 +118,14 @@ namespace Silverseed.RepoCop.Subversion
     {
       const int ActionLength = 2;
 
-      // lines that indicate a replace operation contain a "+"
-      // e.g. A + trunk/vendors/baker/toast.txt
-      //          (from trunk/vendors/baker/bread.txt:r63)
+
       const int CopyInfoIndicatorLength = 1;
       const int MinLineLength = ActionLength + CopyInfoIndicatorLength;
 
       var items = new List<IRepoAffectedItem>();
       var lines = changed.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
+      var copySourceItems = new List<SvnLookRepoAffectedItem>();
       foreach (var line in lines)
       {
         if (string.IsNullOrWhiteSpace(line) || line.Length < MinLineLength)
@@ -134,14 +133,14 @@ namespace Silverseed.RepoCop.Subversion
           continue;
         }
 
-        var action = ParseAction(line.Substring(0, ActionLength));
-
         var path = line.Substring(MinLineLength).Trim();
         if (string.IsNullOrWhiteSpace(path))
         {
           continue;
         }
 
+        var nodeKind = EvaluateNodeKind(path);
+        var action = ParseAction(line.Substring(0, ActionLength));
         if (action == RepositoryItemAction.None)
         {
           var parsedPath = ParseReplacedPath(path);
@@ -150,29 +149,37 @@ namespace Silverseed.RepoCop.Subversion
             continue;
           }
 
-          action = RepositoryItemAction.Replace;
-          path = parsedPath;
-
-          // in case the item has already been added as delete item, remove it and replace it by the "replace" item
-          var alreadyInList = items.FirstOrDefault(x => x.Path == $"/{path}");
-          if (alreadyInList != null)
-          {
-            items.Remove(alreadyInList);
-          }
-        }
-        else if (items.Any(x => x.Path == $"/{path}"))
-        {
+          copySourceItems.Add(new SvnLookRepoAffectedItem(action, nodeKind, $"/{parsedPath}"));
           continue;
         }
-
-        var nodeKind = EvaluateNodeKind(path);
 
         // apparently the behavior of SharpSVN was to return paths with a starting '/'.
         // to be backward compatible to older configurations, we just append it is well, so the behavior stays the same
         items.Add(new SvnLookRepoAffectedItem(action, nodeKind, $"/{path}"));
       }
 
-      return items;
+      foreach(var copySource in copySourceItems)
+      {
+        // lines that indicate a replace operation contain a "+"
+        // e.g. A + trunk/vendors/baker/toast.txt
+        //          (from trunk/vendors/baker/bread.txt:r63)
+        //
+        // there needs to be a counterpart with a delete action for a copysource item to consider it as replaced
+        var alreadyInList = items.FirstOrDefault(x => x.Path == copySource.Path);
+        if (alreadyInList != null)
+        {
+          copySource.Action = RepositoryItemAction.Replace;
+          items.Remove(alreadyInList);
+          items.Add(copySource);
+        }
+        else
+        {
+          // otherwise just track the item as copy source with an action type of "None"
+          items.Add(copySource);
+        }
+      }
+
+      return items.Distinct().ToList();
     }
 
     internal static RepositoryItemNodeKind EvaluateNodeKind(string path)

@@ -27,10 +27,10 @@ namespace Silverseed.RepoCop.Subversion
       this.Path = path;
     }
 
-    public RepositoryItemAction Action { get; }
+    public RepositoryItemAction Action { get; set; }
 
-    public RepositoryItemNodeKind NodeKind { get; }
+    public RepositoryItemNodeKind NodeKind { get; set; }
 
-    public string Path { get; }
+    public string Path { get; set; }
   }
 }

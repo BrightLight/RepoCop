@@ -7,6 +7,7 @@
 namespace Silverseed.RepoCop.Tests
 {
   using System;
+  using System.Collections.Generic;
   using System.Linq;
   using NUnit.Framework;
   using Silverseed.RepoCop.Subversion;
@@ -32,7 +33,17 @@ namespace Silverseed.RepoCop.Tests
     [Test]
     public void TestItemActionParsing([Values("A ", "D ", "U ", "_U", "UU")] string svnAction)
     {
-      Assert.That(SvnLook.ParseAction(svnAction), Is.Not.EqualTo(RepositoryItemAction.None));
+      var expected = new Dictionary<string, RepositoryItemAction> {
+        { "A ", RepositoryItemAction.Add },
+        { "D ", RepositoryItemAction.Delete },
+        { "U ", RepositoryItemAction.Modifiy },
+        { "_U", RepositoryItemAction.Modifiy },
+        { "UU", RepositoryItemAction.Modifiy },
+      };
+
+      var result = SvnLook.ParseAction(svnAction);
+      Assert.That(result, Is.Not.EqualTo(RepositoryItemAction.None));
+      Assert.AreEqual(expected[svnAction], result);
     }
 
     [Test]
@@ -55,8 +66,24 @@ namespace Silverseed.RepoCop.Tests
     [Test]
     public void TestAffectedItems()
     {
-      var changedString =
-@"
+      var changedString = @"
+A   trunk/vendors/baker/toast.txt
+U   trunk/vendors/baker/bakerman.txt
+U   trunk/vendors/baker/oven.txt
+A   trunk/vendors/baker/bread.txt";
+
+      var items = SvnLook.ParseAffectedItems(changedString);
+      Assert.True(items.Count == 4);
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bakerman.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
+    }
+
+    [Test]
+    public void TestReplacedItemsAreTracked()
+    {
+      var changedString = @"
 A + trunk/vendors/baker/toast.txt
     (von trunk/vendors/baker/bread.txt:r63)
 D   trunk/vendors/baker/bread.txt";
@@ -65,6 +92,25 @@ D   trunk/vendors/baker/bread.txt";
       Assert.True(items.Count == 2);
       Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
       Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Replace && x.NodeKind == RepositoryItemNodeKind.File));
+    }
+
+    [Test]
+    public void TestCopySourceIsTracked()
+    {
+      var changedString = @"
+_U  branches/123/vendors/baker/
+U   branches/123/vendors/baker/toast.txt
+A + branches/123/vendors/baker/bread.txt
+    (from trunk/vendors/baker/bread.txt:r111)
+U   branches/123/vendors/baker/oven.txt";
+
+      var items = SvnLook.ParseAffectedItems(changedString);
+      Assert.True(items.Count == 5);
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.Directory));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.None && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
     }
   }
 }

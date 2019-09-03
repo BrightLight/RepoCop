@@ -1,3 +1,5 @@
 .vs
 obj
 /source/Console/Silverseed.RepoCop.Subversion.csproj.user
+/bin
+/source/*.user

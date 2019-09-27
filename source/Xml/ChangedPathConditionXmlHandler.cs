@@ -54,6 +54,9 @@ namespace Silverseed.RepoCop.Xml
             case "Replace":
               changedPathCondition.Actions.Add(RepositoryItemAction.Replace);
               break;
+            case "None":
+              changedPathCondition.Actions.Add(RepositoryItemAction.None);
+              break;
             default:
               //// log unkown action
               break;

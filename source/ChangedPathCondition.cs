@@ -70,7 +70,7 @@ namespace Silverseed.RepoCop
 
     private bool CheckAction(IRepoAffectedItem item)
     {
-      return (this.validActions.Count == 0) || this.validActions.Contains(item.Action);
+      return (this.validActions.Count == 0 && item.Action != RepositoryItemAction.None) || this.validActions.Contains(item.Action);
     }
 
     private bool CheckPath(IRepoAffectedItem item)

@@ -40,6 +40,7 @@ namespace Silverseed.RepoCop.Xml
       this.RegisterHandler("CommandLineInstruction", typeof(CommandLineInstructionXmlHandler));
       this.RegisterHandler("FailInstruction", typeof(FailInstructionXmlHandler));
       this.RegisterHandler("MailInstruction", typeof(MailInstructionXmlHandler));
+      this.RegisterHandler("WebInstruction", typeof(WebInstructionXmlHandler));
       this.RegisterHandler("SmtpServer", typeof(SmtpServerXmlHandler));
       this.RegisterHandler("ReplacementToken", typeof(ReplacementTokenXmlHandler));
     }

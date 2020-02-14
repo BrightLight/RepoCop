@@ -40,6 +40,7 @@ namespace Silverseed.RepoCop.Xml
       var tokenName = '#' + attributes.GetValueOrDefault("TokenName", string.Empty) + '#';
       var value = attributes.GetValueOrDefault("Value", string.Empty);
       var regExPattern = attributes.GetValueOrDefault("RegExPattern", string.Empty);
+      var replacement = attributes.GetValueOrDefault("Replacement", string.Empty);
       if (string.IsNullOrEmpty(tokenName))
       {
         log.Warn(string.Format("No 'TokenName' was specified for {0}", name));
@@ -63,25 +64,41 @@ namespace Silverseed.RepoCop.Xml
       else
       {
         var regex = new Regex(regExPattern, RegexOptions.Compiled);
-        RepositoryInfoHub.Instance.AddToken(tokenName, () =>
-          {
-            var input = RepositoryInfoHub.Instance.ParseTokens(value);
-            log.DebugFormat("Preparing custom replacement token {0}", tokenName);
-            log.DebugFormat("Value: [{0}]", value);
-            log.DebugFormat("Processses value: [{0}]", input);
-            var match = regex.Match(input);
-            if (match != null)
-            {
-              log.DebugFormat("RegEx group count: {0}", match.Groups.Count);
-              if (match.Groups.Count > 1)
-              {
-                log.DebugFormat("Setting custom replacement token {0} to [{1}]", tokenName, match.Groups[1].Value);
-                return match.Groups[1].Value;
-              }
-            }
 
-            return string.Empty;
-          });
+        string ExtractValue()
+        {
+          var input = RepositoryInfoHub.Instance.ParseTokens(value);
+          log.DebugFormat("Preparing custom replacement token {0}", tokenName);
+          log.DebugFormat("Value: [{0}]", value);
+          log.DebugFormat("Processses value: [{0}]", input);
+          var match = regex.Match(input);
+          log.DebugFormat("RegEx group count: {0}", match.Groups.Count);
+          if (match.Groups.Count > 1)
+          {
+            log.DebugFormat("Setting custom replacement token {0} to [{1}]", tokenName, match.Groups[1].Value);
+            return match.Groups[1].Value;
+          }
+
+          return string.Empty;
+        }
+
+        string ReplaceValue()
+        {
+          var input = RepositoryInfoHub.Instance.ParseTokens(value);
+          log.DebugFormat("Preparing custom replacement token {0}", tokenName);
+          log.DebugFormat("Value: [{0}]", value);
+          log.DebugFormat("Processses value: [{0}]", input);
+          return regex.Replace(input, replacement);
+        }
+
+        if (string.IsNullOrEmpty(replacement))
+        {
+          RepositoryInfoHub.Instance.AddToken(tokenName, ExtractValue);
+        }
+        else
+        {
+          RepositoryInfoHub.Instance.AddToken(tokenName, ReplaceValue);
+        }
       }
     }
   }

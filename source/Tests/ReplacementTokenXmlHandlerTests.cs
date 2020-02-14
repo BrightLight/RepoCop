@@ -44,7 +44,7 @@ namespace Silverseed.RepoCop.Tests
     }
 
     [Test]
-    public void RegExReplacementWithExistingTokenAsValue()
+    public void RegExExtractValueWithExistingTokenAsValue()
     {
       RepositoryInfoHub.Flush();
       var replacementTokenXmlHandler = new ReplacementTokenXmlHandler();
@@ -59,6 +59,45 @@ namespace Silverseed.RepoCop.Tests
       repoChangeInfo.Expect(x => x.AffectedItems).Return(new List<IRepoAffectedItem>());
       RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
       Assert.That(RepositoryInfoHub.Instance.ParseTokens("#Foo#"), Is.EqualTo("123"));
+    }
+
+    [Test]
+    public void RegExReplacementWithExistingTokenAsValue()
+    {
+      RepositoryInfoHub.Flush();
+      var replacementTokenXmlHandler = new ReplacementTokenXmlHandler();
+
+      const string Separator = ":";
+      var attributes = new Dictionary<string, string>();
+      attributes.Add("TokenName", "affectedpathswithseparator");
+      attributes.Add("Value", "#affectedpaths#");
+      attributes.Add("RegExPattern", Environment.NewLine);
+      attributes.Add("Replacement", Separator);
+      replacementTokenXmlHandler.ProcessStartElement("ReplacementToken", attributes);
+      var repoChangeInfo = MockRepository.GenerateStub<IRepoChangeInfo>();
+      var affectedItems = new List<IRepoAffectedItem>();
+      var affectedItem1 = MockRepository.GenerateStub<IRepoAffectedItem>();
+      affectedItem1.Stub(x => x.Action).Return(RepositoryItemAction.Add);
+      affectedItem1.Stub(x => x.Path).Return(@"c:\foo\addedfile.txt");
+      affectedItem1.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.File);
+      var affectedItem2 = MockRepository.GenerateStub<IRepoAffectedItem>();
+      affectedItem2.Stub(x => x.Action).Return(RepositoryItemAction.Add);
+      affectedItem2.Stub(x => x.Path).Return(@"c:\foo\bar");
+      affectedItem2.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.Directory);
+      var affectedItem3 = MockRepository.GenerateStub<IRepoAffectedItem>();
+      affectedItem3.Stub(x => x.Action).Return(RepositoryItemAction.Add);
+      affectedItem3.Stub(x => x.Path).Return(@"c:\foo\bar\demo.txt");
+      affectedItem3.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.File);
+      affectedItems.Add(affectedItem1);
+      affectedItems.Add(affectedItem2);
+      affectedItems.Add(affectedItem3);
+
+      var expectedTokenValue = affectedItem1.Path + Separator + affectedItem2.Path + Separator + affectedItem3.Path;
+
+      repoChangeInfo.Expect(x => x.LogMessage).Return("This commit updates [Review #123] by fixing stuff");
+      repoChangeInfo.Expect(x => x.AffectedItems).Return(affectedItems);
+      RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
+      Assert.That(RepositoryInfoHub.Instance.ParseTokens("#affectedpathswithseparator#"), Is.EqualTo(expectedTokenValue));
     }
   }
 }

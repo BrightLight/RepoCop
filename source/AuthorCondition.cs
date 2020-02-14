@@ -18,6 +18,7 @@
 
 namespace Silverseed.RepoCop
 {
+  using System;
   using System.Collections.Generic;
 
   internal class AuthorCondition : RepositoryInfoHubCondition
@@ -36,7 +37,8 @@ namespace Silverseed.RepoCop
 
     protected override void UpdateState(IRepoChangeInfo repoChangeInfo)
     {
-      State = this.authors.Contains(repoChangeInfo.Author);
+      var stringComparison = this.DetermineStringComparison;
+      this.State = this.authors.Exists( x => string.Equals(repoChangeInfo.Author, x, stringComparison));
     }
 
     public ICollection<string> Authors
@@ -52,5 +54,9 @@ namespace Silverseed.RepoCop
         this.authors.AddRange(value);
       }
     }
+
+    public bool CaseSensitive { get; set; }
+
+    private StringComparison DetermineStringComparison => this.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
   }
 }

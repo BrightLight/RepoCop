@@ -42,7 +42,8 @@ namespace Silverseed.RepoCop.Xml
     protected override AuthorCondition CreateCondition(Dictionary<string, string> attributes)
     {
       this.separator = attributes.GetValueOrDefault("Separator", DefaultSeparator);
-      return new AuthorCondition(String.Empty);
+      var caseSensitive = attributes.GetValueOrDefault("CaseSensitive", "false") == "true";
+      return new AuthorCondition(string.Empty) { CaseSensitive = caseSensitive };
     }
   }
 }

@@ -57,7 +57,9 @@ namespace Silverseed.RepoCop
       this.tokenDictionary.Add("#nextrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision + 1).ToString(CultureInfo.InvariantCulture) : String.Empty);
       this.tokenDictionary.Add("#time#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Time.ToString(CultureInfo.CurrentCulture) : String.Empty);
       this.tokenDictionary.Add("#affectedfiles#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine));
+      this.tokenDictionary.Add("#affectedfilesdetailed#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine, true));
       this.tokenDictionary.Add("#affectedpaths#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine));
+      this.tokenDictionary.Add("#affectedpathsdetailed#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine, true));
     }
 
     #region INotifyPropertyChanged Members
@@ -152,7 +154,7 @@ namespace Silverseed.RepoCop
       }
     }
 
-    private string GetAffectedPaths(RepositoryItemNodeKind nodeKind, string separator)
+    private string GetAffectedPaths(RepositoryItemNodeKind nodeKind, string separator, bool detailed = false)
     {
       if (this.repoChangeInfo == null)
       {
@@ -163,12 +165,12 @@ namespace Silverseed.RepoCop
       foreach (var item in this.repoChangeInfo.AffectedItems)
       {
         // files that are not related to a repository action were parsed from merge information and contain the original file that wasn't actually changed by the commit
-        if(item.Action == RepositoryItemAction.None)
+        if (item.Action == RepositoryItemAction.None)
         {
           continue;
         }
 
-        if ((nodeKind == RepositoryItemNodeKind.Unknown) 
+        if ((nodeKind == RepositoryItemNodeKind.Unknown)
           || (item.NodeKind == nodeKind))
         {
           if (stringBuilder.Length > 0)
@@ -176,7 +178,15 @@ namespace Silverseed.RepoCop
             stringBuilder.Append(separator);
           }
 
-          stringBuilder.Append(item.Path);
+
+          if (detailed)
+          {
+            stringBuilder.Append($"{item.Path}|{item.Action}|{item.NodeKind}");
+          }
+          else
+          {
+            stringBuilder.Append(item.Path);
+          }
         }
       }
 

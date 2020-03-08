@@ -141,7 +141,7 @@ namespace Silverseed.RepoCop
     {
       if (mailAddresses.Contains(";"))
       {
-        log.WarnFormat("[{0}] contains ';'. To specify multiple e-mail addresses, you must use ',' as separator.");
+        log.WarnFormat($"[{mailAddresses}] contains ';'. To specify multiple e-mail addresses, you must use ',' as separator.");
       }
     }
   }

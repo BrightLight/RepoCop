@@ -22,7 +22,7 @@ namespace Silverseed.RepoCop
 
   internal class MacroInstruction : Instruction
   {
-    private System.Collections.Generic.List<Instruction> instructions = new System.Collections.Generic.List<Instruction>();
+    private readonly System.Collections.Generic.List<Instruction> instructions = new System.Collections.Generic.List<Instruction>();
 
     public void AddInstruction(Instruction instruction)
     {

@@ -42,7 +42,7 @@ namespace Silverseed.RepoCop.Tests
         new MockHttpHandler("/generic-webhook-trigger/invoke", "POST", (req, rsp, prm) => 
         {
           callCounter++; 
-          return "Post";
+          return "Post was called";
         }),
       };
       

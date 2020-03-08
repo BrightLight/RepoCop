@@ -49,6 +49,7 @@ namespace Silverseed.RepoCop
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
 
             var response = httpClient.SendAsync(request);
+            Console.Out.WriteLine($"{response.Result}");
             return response.Result.IsSuccessStatusCode;
           }
         }

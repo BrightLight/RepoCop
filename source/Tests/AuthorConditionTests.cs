@@ -28,10 +28,10 @@ namespace Silverseed.RepoCop.Tests
   [TestFixture]
   public class AuthorConditionTests
   {
-    [TestCase("AB;CD;EF", "CD", true, Result = true)]
-    [TestCase("AB;CD;EF", "cd", true, Result = false)]
-    [TestCase("AB;CD;EF", "CD", false, Result = true)]
-    [TestCase("AB;CD;EF", "cd", false, Result = true)]
+    [TestCase("AB;CD;EF", "CD", true, ExpectedResult = true)]
+    [TestCase("AB;CD;EF", "cd", true, ExpectedResult = false)]
+    [TestCase("AB;CD;EF", "CD", false, ExpectedResult = true)]
+    [TestCase("AB;CD;EF", "cd", false, ExpectedResult = true)]
     public bool FindAuthorRespectsCasingSetting(string authorsSeparatedBySemicolon, string compareToAuthor, bool caseSensitive)
     {
       var authors = authorsSeparatedBySemicolon.Split(';');

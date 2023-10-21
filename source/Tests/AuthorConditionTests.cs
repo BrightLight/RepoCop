@@ -19,8 +19,8 @@
 namespace Silverseed.RepoCop.Tests
 {
   using System.Collections.Generic;
+  using Moq;
   using NUnit.Framework;
-  using Rhino.Mocks;
 
   /// <summary>
   /// Unit tests for the <see cref="AuthorCondition"/> class.
@@ -38,8 +38,8 @@ namespace Silverseed.RepoCop.Tests
       var authorCondition = new TestableAuthorCondition(authors);
       authorCondition.CaseSensitive = caseSensitive;
 
-      var repoChangeInfo = MockRepository.GenerateStub<IRepoChangeInfo>();
-      repoChangeInfo.Stub(x => x.Author).Return(compareToAuthor);
+      var repoChangeInfo = Mock.Of<IRepoChangeInfo>(x =>
+        x.Author == compareToAuthor);
       authorCondition.ManuallyUpdateState(repoChangeInfo);
 
       return authorCondition.State;

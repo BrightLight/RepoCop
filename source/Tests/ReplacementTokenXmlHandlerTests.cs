@@ -22,9 +22,9 @@ namespace Silverseed.RepoCop.Tests
   using System.Collections.Generic;
   using System.Linq;
   using System.Text;
+  using Moq;
   using NUnit.Framework;
   using Silverseed.RepoCop.Xml;
-  using Rhino.Mocks;
 
   [TestFixture]
   public class ReplacementTokenXmlHandlerTests
@@ -54,9 +54,9 @@ namespace Silverseed.RepoCop.Tests
       attributes.Add("Value", "#logmessage#");
       attributes.Add("RegExPattern", @"\[Review #(\d+)\]");
       replacementTokenXmlHandler.ProcessStartElement("ReplacementToken", attributes);
-      var repoChangeInfo = MockRepository.GenerateStub<IRepoChangeInfo>();
-      repoChangeInfo.Expect(x => x.LogMessage).Return("This commit updates [Review #123] by fixing stuff");
-      repoChangeInfo.Expect(x => x.AffectedItems).Return(new List<IRepoAffectedItem>());
+      var repoChangeInfo = Mock.Of<IRepoChangeInfo>(x =>
+        x.LogMessage == "This commit updates [Review #123] by fixing stuff"
+        && x.AffectedItems == new List<IRepoAffectedItem>());
       RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
       Assert.That(RepositoryInfoHub.Instance.ParseTokens("#Foo#"), Is.EqualTo("123"));
     }
@@ -74,28 +74,28 @@ namespace Silverseed.RepoCop.Tests
       attributes.Add("RegExPattern", Environment.NewLine);
       attributes.Add("Replacement", Separator);
       replacementTokenXmlHandler.ProcessStartElement("ReplacementToken", attributes);
-      var repoChangeInfo = MockRepository.GenerateStub<IRepoChangeInfo>();
       var affectedItems = new List<IRepoAffectedItem>();
-      var affectedItem1 = MockRepository.GenerateStub<IRepoAffectedItem>();
-      affectedItem1.Stub(x => x.Action).Return(RepositoryItemAction.Add);
-      affectedItem1.Stub(x => x.Path).Return(@"c:\foo\addedfile.txt");
-      affectedItem1.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.File);
-      var affectedItem2 = MockRepository.GenerateStub<IRepoAffectedItem>();
-      affectedItem2.Stub(x => x.Action).Return(RepositoryItemAction.Add);
-      affectedItem2.Stub(x => x.Path).Return(@"c:\foo\bar");
-      affectedItem2.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.Directory);
-      var affectedItem3 = MockRepository.GenerateStub<IRepoAffectedItem>();
-      affectedItem3.Stub(x => x.Action).Return(RepositoryItemAction.Add);
-      affectedItem3.Stub(x => x.Path).Return(@"c:\foo\bar\demo.txt");
-      affectedItem3.Stub(x => x.NodeKind).Return(RepositoryItemNodeKind.File);
+      var affectedItem1 = Mock.Of<IRepoAffectedItem>(x =>
+        x.Action == RepositoryItemAction.Add
+        && x.Path == @"c:\foo\addedfile.txt"
+        && x.NodeKind == RepositoryItemNodeKind.File);
+      var affectedItem2 = Mock.Of<IRepoAffectedItem>(x =>
+        x.Action == RepositoryItemAction.Add
+        && x.Path == @"c:\foo\bar"
+        && x.NodeKind == RepositoryItemNodeKind.Directory);
+      var affectedItem3 = Mock.Of<IRepoAffectedItem>(x =>
+        x.Action == RepositoryItemAction.Add
+        && x.Path == @"c:\foo\bar\demo.txt"
+        && x.NodeKind == RepositoryItemNodeKind.File);
       affectedItems.Add(affectedItem1);
       affectedItems.Add(affectedItem2);
       affectedItems.Add(affectedItem3);
 
       var expectedTokenValue = affectedItem1.Path + Separator + affectedItem2.Path + Separator + affectedItem3.Path;
 
-      repoChangeInfo.Expect(x => x.LogMessage).Return("This commit updates [Review #123] by fixing stuff");
-      repoChangeInfo.Expect(x => x.AffectedItems).Return(affectedItems);
+      var repoChangeInfo = Mock.Of<IRepoChangeInfo>(x => 
+        x.LogMessage == "This commit updates [Review #123] by fixing stuff"
+        && x.AffectedItems == affectedItems);
       RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
       Assert.That(RepositoryInfoHub.Instance.ParseTokens("#affectedpathswithseparator#"), Is.EqualTo(expectedTokenValue));
     }

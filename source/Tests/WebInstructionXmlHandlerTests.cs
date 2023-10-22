@@ -15,13 +15,17 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Silverseed.RepoCop.Tests
 {
   using System.Collections.Generic;
   using System.Net;
   using System.Net.Sockets;
-  using MockHttpServer;
   using NUnit.Framework;
+  using WireMock;
+  using WireMock.RequestBuilders;
+  using WireMock.ResponseBuilders;
+  using WireMock.Server;
 
   /// <summary>
   /// Unit tests for the <see cref="WebInstruction"/> class.
@@ -36,26 +40,35 @@ namespace Silverseed.RepoCop.Tests
     public void UrlIsSuccessfullyCalled()
     {
       var callCounter = 0;
-      var port = GetFreeTcpPort();
-      var requestHandlers = new List<MockHttpHandler>()
+      var server = WireMockServer.Start();
+            
+      server
+        .Given(Request.Create().WithPath("/generic-webhook-trigger/invoke").UsingPost())
+        .RespondWith(Response.Create()
+          .WithStatusCode(200)
+          .WithCallback(request =>
+          {
+            callCounter++;
+            return new ResponseMessage { BodyOriginal = "Post was called" };
+          }));
+  
+      try
       {
-        new MockHttpHandler("/generic-webhook-trigger/invoke", "POST", (req, rsp, prm) => 
+        var webInstruction = new WebInstruction
         {
-          callCounter++; 
-          return "Post was called";
-        }),
-      };
-      
-      using (new MockServer(port, requestHandlers))
-      {
-        var webInstruction = new WebInstruction();
-        var url = $"http://localhost:{port}/generic-webhook-trigger/invoke";
-        webInstruction.Url = url;
-        webInstruction.HttpMethod = "POST";
-        webInstruction.ContentType = "application/json";
-        webInstruction.Content = "This is a test";
+          Url = $"{server.Urls[0]}/generic-webhook-trigger/invoke",
+          HttpMethod = "POST",
+          ContentType = "application/json",
+          Content = "This is a test",
+        };
+
         Assert.That(webInstruction.Execute(), Is.True);
         Assert.That(callCounter, Is.EqualTo(1));
+      }
+      finally
+      {
+        server.Stop();
+        server.Dispose();
       }
     }
 

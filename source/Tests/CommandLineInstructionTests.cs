@@ -33,7 +33,10 @@ namespace Silverseed.RepoCop.Tests
     public void ExpectedExitCode0Test()
     {
       var commandLineInstruction = new CommandLineInstruction();
-      commandLineInstruction.FileName = "EchoParams.bat";
+      var testDirectory = TestContext.CurrentContext.TestDirectory;
+      var fileName = "EchoParams.bat";
+      var batchFile = Path.Combine(testDirectory, fileName);
+      commandLineInstruction.FileName = batchFile;
       commandLineInstruction.Arguments = "0 TextParam ErrorParam";
       var result = commandLineInstruction.Execute();
       Assert.IsTrue(result);

@@ -29,14 +29,13 @@ namespace Silverseed.RepoCop.Tests
   [TestFixture]
   public class CommandLineInstructionTests
   {
+    const string BatchFileName = "EchoParams.bat";
+
     [Test]
     public void ExpectedExitCode0Test()
     {
       var commandLineInstruction = new CommandLineInstruction();
-      var testDirectory = TestContext.CurrentContext.TestDirectory;
-      var fileName = "EchoParams.bat";
-      var batchFile = Path.Combine(testDirectory, fileName);
-      commandLineInstruction.FileName = batchFile;
+      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 TextParam ErrorParam";
       var result = commandLineInstruction.Execute();
       Assert.IsTrue(result);
@@ -46,7 +45,7 @@ namespace Silverseed.RepoCop.Tests
     public void ExitCodeDiffersFromExpectedExitCodeMustFail()
     {
       var commandLineInstruction = new CommandLineInstruction();
-      commandLineInstruction.FileName = "EchoParams.bat";
+      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "5 TextParam";
       var result = commandLineInstruction.Execute();
       Assert.IsFalse(result);
@@ -56,7 +55,8 @@ namespace Silverseed.RepoCop.Tests
     public void ExpectedExitCodeDiffersFrom0Test()
     {
       var commandLineInstruction = new CommandLineInstruction();
-      commandLineInstruction.FileName = "EchoParams.bat";
+      var batchFile = BuildFullFileNameWithPath(BatchFileName);
+      commandLineInstruction.FileName = batchFile;
       commandLineInstruction.Arguments = "22 TextParam";
       commandLineInstruction.ExpectedExitCode = 22;
       var result = commandLineInstruction.Execute();
@@ -70,7 +70,7 @@ namespace Silverseed.RepoCop.Tests
       var memoryStream = new MemoryStream();
       var streamWriter = new StreamWriter(memoryStream);
       var commandLineInstruction = new CommandLineInstruction(streamWriter, null);
-      commandLineInstruction.FileName = "EchoParams.bat";
+      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 " + standardParameterText;
       var result = commandLineInstruction.Execute();
       Assert.IsTrue(result);
@@ -88,7 +88,7 @@ namespace Silverseed.RepoCop.Tests
       var memoryStream = new MemoryStream();
       var streamWriter = new StreamWriter(memoryStream);
       var commandLineInstruction = new CommandLineInstruction(null, streamWriter);
-      commandLineInstruction.FileName = "EchoParams.bat";
+      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 " + standardParameterText + " " + errorParameterText;
       var result = commandLineInstruction.Execute();
       Assert.IsTrue(result);
@@ -108,7 +108,19 @@ namespace Silverseed.RepoCop.Tests
       Assert.That(processStartInfo, Is.Not.Null);
       Assert.That(processStartInfo.Arguments, Is.EqualTo("first line second line third line"));
     }
-    
+
+    /// <summary>
+    /// Adds the directory that contains the test assembly to the <paramref name="fileName"/>. 
+    /// </summary>
+    /// <param name="fileName">The name of a file that is used by tests.</param>
+    /// <returns>The <paramref name="fileName"/> with the test directory added.</returns>
+    private string BuildFullFileNameWithPath(string fileName)
+    {
+      var testDirectory = TestContext.CurrentContext.TestDirectory;
+      var fileNameWithPath = Path.Combine(testDirectory, fileName);
+      return fileNameWithPath;
+    }
+
     private class CommandLineInstructionTest : CommandLineInstruction
     {
       protected override bool InternalExecute()

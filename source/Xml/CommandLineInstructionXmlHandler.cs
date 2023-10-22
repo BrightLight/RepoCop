@@ -20,7 +20,6 @@ namespace Silverseed.RepoCop.Xml
 {
   using System;
   using System.Collections.Generic;
-  using System.Runtime.Hosting;
   using Silverseed.Core;
 
   internal class CommandLineInstructionXmlHandler : InstructionXmlHandler

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
     <ProjectGuid>{24207F82-238E-4B45-B1AE-9855D52DBAA9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <Deterministic>true</Deterministic>

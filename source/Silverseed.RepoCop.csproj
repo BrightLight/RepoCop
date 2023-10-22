@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
     <ProjectGuid>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</ProjectGuid>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>

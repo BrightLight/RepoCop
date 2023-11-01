@@ -36,9 +36,9 @@ namespace Silverseed.RepoCop.Tests
       var expected = new Dictionary<string, RepositoryItemAction> {
         { "A ", RepositoryItemAction.Add },
         { "D ", RepositoryItemAction.Delete },
-        { "U ", RepositoryItemAction.Modifiy },
-        { "_U", RepositoryItemAction.Modifiy },
-        { "UU", RepositoryItemAction.Modifiy },
+        { "U ", RepositoryItemAction.Modify },
+        { "_U", RepositoryItemAction.Modify },
+        { "UU", RepositoryItemAction.Modify },
       };
 
       var result = SvnLook.ParseAction(svnAction);
@@ -75,8 +75,8 @@ A   trunk/vendors/baker/bread.txt";
       var items = SvnLook.ParseAffectedItems(changedString);
       Assert.True(items.Count == 4);
       Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
-      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bakerman.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
-      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bakerman.txt" && x.Action == RepositoryItemAction.Modify && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modify && x.NodeKind == RepositoryItemNodeKind.File));
       Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
     }
 
@@ -106,11 +106,11 @@ U   branches/123/vendors/baker/oven.txt";
 
       var items = SvnLook.ParseAffectedItems(changedString);
       Assert.True(items.Count == 5);
-      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.Directory));
-      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/" && x.Action == RepositoryItemAction.Modify && x.NodeKind == RepositoryItemNodeKind.Directory));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/toast.txt" && x.Action == RepositoryItemAction.Modify && x.NodeKind == RepositoryItemNodeKind.File));
       Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.Add && x.NodeKind == RepositoryItemNodeKind.File));
       Assert.True(items.Any(x => x.Path == "/trunk/vendors/baker/bread.txt" && x.Action == RepositoryItemAction.None && x.NodeKind == RepositoryItemNodeKind.File));
-      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modifiy && x.NodeKind == RepositoryItemNodeKind.File));
+      Assert.True(items.Any(x => x.Path == "/branches/123/vendors/baker/oven.txt" && x.Action == RepositoryItemAction.Modify && x.NodeKind == RepositoryItemNodeKind.File));
     }
   }
 }

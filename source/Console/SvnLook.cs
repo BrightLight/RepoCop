@@ -218,7 +218,7 @@ namespace Silverseed.RepoCop.Subversion
         case FileUpdate:
         case PropertyUpdate:
         case FileAndPropertyUpdate:
-          return RepositoryItemAction.Modifiy;
+          return RepositoryItemAction.Modify;
         default:
           return RepositoryItemAction.None;
       }

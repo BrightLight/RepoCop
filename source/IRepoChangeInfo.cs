@@ -48,7 +48,7 @@ namespace Silverseed.RepoCop
 
     Delete,
 
-    Modifiy,
+    Modify,
 
     Replace
   }

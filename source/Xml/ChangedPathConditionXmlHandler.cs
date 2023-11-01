@@ -47,7 +47,7 @@ namespace Silverseed.RepoCop.Xml
               changedPathCondition.Actions.Add(RepositoryItemAction.Delete);
               break;
             case "Modify":
-              changedPathCondition.Actions.Add(RepositoryItemAction.Modifiy);
+              changedPathCondition.Actions.Add(RepositoryItemAction.Modify);
               break;
             case "Replace":
               changedPathCondition.Actions.Add(RepositoryItemAction.Replace);

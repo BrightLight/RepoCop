@@ -24,32 +24,6 @@ namespace Silverseed.RepoCop
   using Silverseed.Core.Xml;
   using Silverseed.RepoCop.Xml;
 
-  /// <summary>
-  /// Possible type of repository hooks.
-  /// </summary>
-  public enum HookType
-  {
-    /// <summary>
-    /// An undefined hook type.
-    /// </summary>
-    Undefined,
-
-    /// <summary>
-    /// A start commit hook.
-    /// </summary>
-    StartCommit,
-
-    /// <summary>
-    /// A pre-commit hook.
-    /// </summary>
-    PreCommit,
-
-    /// <summary>
-    /// A post-commit hook.
-    /// </summary>
-    PostCommit
-  }
-
   public static class HookManager
   {
     /// <summary>

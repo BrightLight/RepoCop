@@ -26,12 +26,10 @@ namespace Silverseed.RepoCop.Xml
   {
     protected override LogMessageCondition CreateCondition(Dictionary<string, string> attributes)
     {
-      string logMessageRegExPattern;
-      attributes.TryGetValue("LogMessageRegExPattern", out logMessageRegExPattern);
+      attributes.TryGetValue("LogMessageRegExPattern", out var logMessageRegExPattern);
 
-      RegexOptions regexOptions = RegexOptions.Compiled;
-      string regexOptionsText;
-      if (attributes.TryGetValue("RegExOptions", out regexOptionsText))
+      var regexOptions = RegexOptions.Compiled;
+      if (attributes.TryGetValue("RegExOptions", out var regexOptionsText))
       {
         foreach (var regexOptionText in regexOptionsText.Split('+'))
         {

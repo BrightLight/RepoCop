@@ -31,7 +31,7 @@ namespace Silverseed.RepoCop
 
     protected override bool InternalExecute()
     {
-      bool overallResult = true;
+      var overallResult = true;
       this.instructions.ForEach(x => overallResult &= x.Execute());
       return overallResult;
     }

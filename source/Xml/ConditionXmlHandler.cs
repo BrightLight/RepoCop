@@ -31,8 +31,7 @@ namespace Silverseed.RepoCop.Xml
     {
       this.Condition = this.CreateCondition(attributes);
       ICondition condition = this.Condition;
-      string negate;
-      if (attributes.TryGetValue("Negate", out negate))
+      if (attributes.TryGetValue("Negate", out var negate))
       {
         if (negate == "True")
         {

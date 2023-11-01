@@ -25,17 +25,15 @@ namespace Silverseed.RepoCop.Xml
   {
     protected override ChangedPathCondition CreateCondition(Dictionary<string, string> attributes)
     {
-      string changedPathRegExPattern;
-      attributes.TryGetValue("ChangedPathRegExPattern", out changedPathRegExPattern);
-      if (String.IsNullOrEmpty(changedPathRegExPattern))
+      attributes.TryGetValue("ChangedPathRegExPattern", out var changedPathRegExPattern);
+      if (string.IsNullOrEmpty(changedPathRegExPattern))
       {
         changedPathRegExPattern = ".*";
       }
 
       var changedPathCondition = new ChangedPathCondition(changedPathRegExPattern);
 
-      string actionAttribute;
-      if (attributes.TryGetValue("Action", out actionAttribute))
+      if (attributes.TryGetValue("Action", out var actionAttribute))
       {
         var actions = actionAttribute.Split('+');
         foreach (var actionText in actions)

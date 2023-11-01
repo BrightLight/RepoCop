@@ -28,8 +28,7 @@ namespace Silverseed.RepoCop.Xml
       var newInstruction = this.CreateInstruction(attributes);
       if (ObjectFactory.Instance.ObjectStack.Count > 0)
       {
-        var macroInstruction = ObjectFactory.Instance.ObjectStack.Peek() as MacroInstruction;
-        if (macroInstruction != null)
+        if (ObjectFactory.Instance.ObjectStack.Peek() is MacroInstruction macroInstruction)
         {
           macroInstruction.AddInstruction(newInstruction);
         }

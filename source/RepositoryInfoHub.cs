@@ -50,12 +50,12 @@ namespace Silverseed.RepoCop
     /// </summary>
     public RepositoryInfoHub()
     {
-      this.tokenDictionary.Add("#author#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Author : String.Empty);
-      this.tokenDictionary.Add("#logmessage#", () => this.repoChangeInfo != null ? this.repoChangeInfo.LogMessage : String.Empty);
-      this.tokenDictionary.Add("#prevrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision - 1).ToString(CultureInfo.InvariantCulture) : String.Empty);
-      this.tokenDictionary.Add("#revision#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Revision.ToString(CultureInfo.InvariantCulture) : String.Empty);
-      this.tokenDictionary.Add("#nextrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision + 1).ToString(CultureInfo.InvariantCulture) : String.Empty);
-      this.tokenDictionary.Add("#time#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Time.ToString(CultureInfo.CurrentCulture) : String.Empty);
+      this.tokenDictionary.Add("#author#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Author : string.Empty);
+      this.tokenDictionary.Add("#logmessage#", () => this.repoChangeInfo != null ? this.repoChangeInfo.LogMessage : string.Empty);
+      this.tokenDictionary.Add("#prevrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision - 1).ToString(CultureInfo.InvariantCulture) : string.Empty);
+      this.tokenDictionary.Add("#revision#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Revision.ToString(CultureInfo.InvariantCulture) : string.Empty);
+      this.tokenDictionary.Add("#nextrevision#", () => this.repoChangeInfo != null ? (this.repoChangeInfo.Revision + 1).ToString(CultureInfo.InvariantCulture) : string.Empty);
+      this.tokenDictionary.Add("#time#", () => this.repoChangeInfo != null ? this.repoChangeInfo.Time.ToString(CultureInfo.CurrentCulture) : string.Empty);
       this.tokenDictionary.Add("#affectedfiles#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine));
       this.tokenDictionary.Add("#affectedfilesdetailed#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine, true));
       this.tokenDictionary.Add("#affectedpaths#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine));
@@ -111,11 +111,11 @@ namespace Silverseed.RepoCop
     /// Replaces all known tokens in the specified <paramref name="rawText"/> with their
     /// current value and returns this "expanded" text.
     /// </summary>
-    /// <param name="rawText">A text possibly containing replacedment tokens that should now be replaced with their actual values.</param>
+    /// <param name="rawText">A text possibly containing replacement tokens that should now be replaced with their actual values.</param>
     /// <returns>The specified <paramref name="rawText"/> with all known replacement tokens replaced with their actual values.</returns>
     public string ParseTokens(string rawText)
     {
-      string newText = rawText;
+      var newText = rawText;
       foreach (var token in this.tokenDictionary)
       {
         if (newText.Contains(token.Key))
@@ -148,17 +148,14 @@ namespace Silverseed.RepoCop
     /// <param name="propertyName">The name of the property that was changed.</param>
     private void OnNotifyPropertyChanged(string propertyName)
     {
-      if (this.PropertyChanged != null)
-      {
-        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-      }
+      this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     private string GetAffectedPaths(RepositoryItemNodeKind nodeKind, string separator, bool detailed = false)
     {
       if (this.repoChangeInfo == null)
       {
-        return String.Empty;
+        return string.Empty;
       }
 
       var stringBuilder = new StringBuilder();

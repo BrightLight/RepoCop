@@ -29,8 +29,7 @@ namespace Silverseed.RepoCop.Xml
     {
       base.ProcessStartElement(name, attributes);
 
-      int port;
-      Int32.TryParse(attributes.GetValueOrDefault("Port", String.Empty), out port);
+      int.TryParse(attributes.GetValueOrDefault("Port", string.Empty), out var port);
       var newSmtpServer = new SmtpServer(attributes.GetValueOrDefault("Name", null), attributes.GetValueOrDefault("Host", null), port);
       MailManager.Instance.RegisterMailServer(newSmtpServer);
     }

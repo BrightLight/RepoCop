@@ -42,15 +42,13 @@ namespace Silverseed.RepoCop.Xml
       var arguments = attributes.GetValueOrDefault("Arguments", string.Empty);
       this.executeInstruction.Arguments = Environment.ExpandEnvironmentVariables(arguments);
       this.executeInstruction.NewLineReplacement = attributes.GetValueOrDefault("NewLineReplacement", string.Empty);
-      
-      int timeoutInMilliseconds;
-      if (int.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", string.Empty), out timeoutInMilliseconds))
+
+      if (int.TryParse(attributes.GetValueOrDefault("TimeoutInMilliseconds", string.Empty), out var timeoutInMilliseconds))
       {
         this.executeInstruction.TimeoutInMilliseconds = timeoutInMilliseconds;
       }
 
-      int expectedExitCode;
-      if (int.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", string.Empty), out expectedExitCode))
+      if (int.TryParse(attributes.GetValueOrDefault("ExpectedExitCode", string.Empty), out var expectedExitCode))
       {
         this.executeInstruction.ExpectedExitCode = expectedExitCode;
       }

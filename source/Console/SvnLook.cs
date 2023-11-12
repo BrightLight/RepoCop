@@ -72,7 +72,7 @@ namespace Silverseed.RepoCop.Subversion
         return null;
       }
 
-      return new SvnLookRepoChangeInfo(hookType, author.Trim(), svnlog.Trim(), revision, offset.DateTime, items);
+      return new SvnLookRepoChangeInfo(hookType, author, svnlog, revision, offset.DateTime, items, Array.Empty<string>());
     }
 
     public static IRepoChangeInfo Transaction(HookType hookType, string repository, string transaction)
@@ -101,7 +101,7 @@ namespace Silverseed.RepoCop.Subversion
         return null;
       }
 
-      return new SvnLookRepoChangeInfo(hookType, author.Trim(), svnlog.Trim(), -1, offset.DateTime, items);
+      return new SvnLookRepoChangeInfo(hookType, author, svnlog, -1, offset.DateTime, items, Array.Empty<string>());
     }
 
     private static ICollection<IRepoAffectedItem> GetAffectedItems(string repository, long rev)
@@ -218,7 +218,7 @@ namespace Silverseed.RepoCop.Subversion
         case FileUpdate:
         case PropertyUpdate:
         case FileAndPropertyUpdate:
-          return RepositoryItemAction.Modifiy;
+          return RepositoryItemAction.Modify;
         default:
           return RepositoryItemAction.None;
       }

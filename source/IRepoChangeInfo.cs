@@ -31,6 +31,11 @@ namespace Silverseed.RepoCop
     long Revision { get; }
     DateTime Time { get; }
     ICollection<IRepoAffectedItem> AffectedItems { get; }
+
+    /// <summary>
+    /// Gets the capabilities of the client that connects to the SCM server. 
+    /// </summary>
+    IReadOnlyCollection<string> ClientCapabilities { get; }
   }
 
   public interface IRepoAffectedItem
@@ -48,7 +53,7 @@ namespace Silverseed.RepoCop
 
     Delete,
 
-    Modifiy,
+    Modify,
 
     Replace
   }

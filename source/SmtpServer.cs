@@ -108,7 +108,7 @@ namespace Silverseed.RepoCop
     /// <returns>A new <see cref="SmtpClient"/> instance.</returns>
     private SmtpClient BuildSmtpClient()
     {
-      if (String.IsNullOrEmpty(this.Host))
+      if (string.IsNullOrEmpty(this.Host))
       {
         return new SmtpClient();
       }

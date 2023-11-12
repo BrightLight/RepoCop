@@ -62,7 +62,7 @@ namespace Silverseed.RepoCop
     /// Otherwise null.</returns>
     private static MailAddress BuildMailAddress(string mailAddress)
     {
-      if (!String.IsNullOrEmpty(mailAddress))
+      if (!string.IsNullOrEmpty(mailAddress))
       {
         return new MailAddress(mailAddress);
       }
@@ -73,7 +73,7 @@ namespace Silverseed.RepoCop
     /// <summary>
     /// Builds the mail message to send.
     /// </summary>
-    /// <returns>A <see cref="MailMessage"/> redy to be send.</returns>
+    /// <returns>A <see cref="MailMessage"/> ready to be send.</returns>
     /// <remarks>
     /// The properties <see cref="FromMailAddress"/>, <see cref="ToMailAddresses"/>, <see cref="CcMailAddresses"/>,
     /// <see cref="BccMailAddresses"/>, <see cref="Subject"/> and <see cref="Body"/> are parsed replacing all

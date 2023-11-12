@@ -27,15 +27,15 @@ namespace Silverseed.RepoCop.Xml
     protected override Instruction CreateInstruction(Dictionary<string, string> attributes)
     {
       var mailInstruction = new MailInstruction();
-      mailInstruction.Body = attributes.GetValueOrDefault("Body", String.Empty);
-      var bodyTemplateFile = attributes.GetValueOrDefault("BodyTemplateFile", String.Empty);
+      mailInstruction.Body = attributes.GetValueOrDefault("Body", string.Empty);
+      var bodyTemplateFile = attributes.GetValueOrDefault("BodyTemplateFile", string.Empty);
       mailInstruction.BodyTemplateFile = Environment.ExpandEnvironmentVariables(bodyTemplateFile);
-      mailInstruction.BccMailAddresses = attributes.GetValueOrDefault("BccMailAddresses", String.Empty);
-      mailInstruction.CcMailAddresses = attributes.GetValueOrDefault("CcMailAddresses", String.Empty);
-      mailInstruction.FromMailAddress = attributes.GetValueOrDefault("FromMailAddress", String.Empty);
-      mailInstruction.ReplyToMailAddress = attributes.GetValueOrDefault("ReplyToMailAddress", String.Empty);
-      mailInstruction.Subject = attributes.GetValueOrDefault("Subject", String.Empty);
-      mailInstruction.ToMailAddresses = attributes.GetValueOrDefault("ToMailAddresses", String.Empty);
+      mailInstruction.BccMailAddresses = attributes.GetValueOrDefault("BccMailAddresses", string.Empty);
+      mailInstruction.CcMailAddresses = attributes.GetValueOrDefault("CcMailAddresses", string.Empty);
+      mailInstruction.FromMailAddress = attributes.GetValueOrDefault("FromMailAddress", string.Empty);
+      mailInstruction.ReplyToMailAddress = attributes.GetValueOrDefault("ReplyToMailAddress", string.Empty);
+      mailInstruction.Subject = attributes.GetValueOrDefault("Subject", string.Empty);
+      mailInstruction.ToMailAddresses = attributes.GetValueOrDefault("ToMailAddresses", string.Empty);
       return mailInstruction;
     }
   }

@@ -24,8 +24,7 @@ namespace Silverseed.RepoCop.Xml
   {
     protected override Instruction CreateInstruction(Dictionary<string, string> attributes)
     {
-      string message;
-      attributes.TryGetValue("Message", out message);
+      attributes.TryGetValue("Message", out var message);
       return new FailInstruction(message);
     }
   }

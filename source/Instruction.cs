@@ -23,20 +23,7 @@ namespace Silverseed.RepoCop
 
   public abstract class Instruction
   {
-    private ICondition condition;
-
-    public ICondition Condition
-    {
-      get
-      {
-        return this.condition;
-      }
-
-      set
-      {
-        this.condition = value;
-      }
-    }
+    public ICondition Condition { get; set; }
 
     /// <summary>
     /// Executes this instruction.
@@ -44,7 +31,7 @@ namespace Silverseed.RepoCop
     /// <returns><c>True</c> if no errors occured. <c>False</c> if something went wrong.</returns>
     public bool Execute()
     {
-      if ((this.condition == null) || this.condition.State)
+      if ((this.Condition == null) || this.Condition.State)
       {
         return this.InternalExecute();
       }
@@ -56,7 +43,7 @@ namespace Silverseed.RepoCop
 
     public override string ToString()
     {
-      var text = base.ToString() + Environment.NewLine + "  " + (this.condition != null ? this.condition.ToString() : "<no condition>");
+      var text = base.ToString() + Environment.NewLine + "  " + (this.Condition != null ? this.Condition.ToString() : "<no condition>");
       return text;
     }
   }

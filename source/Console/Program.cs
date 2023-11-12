@@ -84,6 +84,8 @@ namespace Silverseed.RepoCop.Subversion
               log.DebugFormat("Repository path: [{0}]", repositoryPath);
               log.DebugFormat("Username: [{0}]", username);
               log.DebugFormat("Client capabilities: [{0}]", capabilities);
+              
+              repoChangeInfo = new SvnLookRepoChangeInfo(HookType.StartCommit, username, string.Empty, -1, DateTime.MinValue, null, capabilities.Split());
             }
             else
             {
@@ -108,8 +110,7 @@ namespace Silverseed.RepoCop.Subversion
             if (args.Length > 2)
             {
               repositoryPath = args[1];
-              long revision;
-              if (Int64.TryParse(args[2], out revision))
+              if (long.TryParse(args[2], out var revision))
               {
                 repoChangeInfo = GetPostCommitRepoChangeInfo(repositoryPath, revision);
               }
@@ -130,12 +131,10 @@ namespace Silverseed.RepoCop.Subversion
             break;
         }
 
-        if (repoChangeInfo != null)
+        if (repoChangeInfo != null
+            && !HookManager.Execute(repoChangeInfo))
         {
-          if (!HookManager.Execute(repoChangeInfo))
-          {
-            Environment.ExitCode = 1;
-          }
+          Environment.ExitCode = 1;
         }
       }
       catch (Exception e)

@@ -24,32 +24,6 @@ namespace Silverseed.RepoCop
   using Silverseed.Core.Xml;
   using Silverseed.RepoCop.Xml;
 
-  /// <summary>
-  /// Possible type of repository hooks.
-  /// </summary>
-  public enum HookType
-  {
-    /// <summary>
-    /// An undefined hook type.
-    /// </summary>
-    Undefined,
-
-    /// <summary>
-    /// A start commit hook.
-    /// </summary>
-    StartCommit,
-
-    /// <summary>
-    /// A pre-commit hook.
-    /// </summary>
-    PreCommit,
-
-    /// <summary>
-    /// A post-commit hook.
-    /// </summary>
-    PostCommit
-  }
-
   public static class HookManager
   {
     /// <summary>
@@ -98,28 +72,38 @@ namespace Silverseed.RepoCop
     private static Instruction BuildInstructions()
     {
       var configurationFile = FindHookConfigurationFile();
+      return ParseInstructions(configurationFile);
+    }
+
+    private static Instruction ParseInstructions(string configurationFile)
+    {
       log.DebugFormat("Looking for configuration file {0}", configurationFile);
       if (File.Exists(configurationFile))
       {
         log.Debug("Configuration file found.");
         using (var configXmlStream = new FileStream(configurationFile, FileMode.Open, FileAccess.Read))
         {
-          var xmlHub = new XmlHub(new HookConfigServiceLocator());
-
-          var instructions = new MacroInstruction();
-          ObjectFactory.Instance.ObjectStack.Push(instructions);
-          xmlHub.Process(configXmlStream);
-
-          if (ObjectFactory.Instance.ObjectStack.Count != 1)
-          {
-            throw new NotSupportedException("Something went wrong while parsing the configuration file.");
-          }
-
-          return instructions;
+          return ParseInstructions(configXmlStream);
         }
       }
 
       return new NullInstruction();
+    }
+
+    internal static Instruction ParseInstructions(Stream configXmlStream)
+    {
+      var xmlHub = new XmlHub(new HookConfigServiceLocator());
+
+      var instructions = new MacroInstruction();
+      ObjectFactory.Instance.ObjectStack.Push(instructions);
+      xmlHub.Process(configXmlStream);
+
+      if (ObjectFactory.Instance.ObjectStack.Count != 1)
+      {
+        throw new NotSupportedException("Something went wrong while parsing the configuration file.");
+      }
+
+      return instructions;
     }
   }
 }

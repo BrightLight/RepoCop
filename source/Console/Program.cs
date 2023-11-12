@@ -85,8 +85,7 @@ namespace Silverseed.RepoCop.Subversion
               log.DebugFormat("Username: [{0}]", username);
               log.DebugFormat("Client capabilities: [{0}]", capabilities);
               
-              // TODO: build a "repoChangeInfo" instance using the command-line provided arguments
-              // doesn't really fit. Maybe we need a different kind of property-bag for this?
+              repoChangeInfo = new SvnLookRepoChangeInfo(HookType.StartCommit, username, string.Empty, -1, DateTime.MinValue, null, capabilities.Split());
             }
             else
             {

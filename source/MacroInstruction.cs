@@ -19,10 +19,11 @@
 namespace Silverseed.RepoCop
 {
   using System;
+  using System.Collections.Generic;
 
   internal class MacroInstruction : Instruction
   {
-    private readonly System.Collections.Generic.List<Instruction> instructions = new System.Collections.Generic.List<Instruction>();
+    private readonly List<Instruction> instructions = new();
 
     public void AddInstruction(Instruction instruction)
     {
@@ -46,5 +47,10 @@ namespace Silverseed.RepoCop
 
       return text;
     }
+    
+    /// <summary>
+    /// Gets the list of instructions that are executed by this macro instruction.
+    /// </summary>
+    public IReadOnlyList<Instruction> Instructions => this.instructions;
   }
 }

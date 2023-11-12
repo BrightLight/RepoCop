@@ -72,28 +72,38 @@ namespace Silverseed.RepoCop
     private static Instruction BuildInstructions()
     {
       var configurationFile = FindHookConfigurationFile();
+      return ParseInstructions(configurationFile);
+    }
+
+    private static Instruction ParseInstructions(string configurationFile)
+    {
       log.DebugFormat("Looking for configuration file {0}", configurationFile);
       if (File.Exists(configurationFile))
       {
         log.Debug("Configuration file found.");
         using (var configXmlStream = new FileStream(configurationFile, FileMode.Open, FileAccess.Read))
         {
-          var xmlHub = new XmlHub(new HookConfigServiceLocator());
-
-          var instructions = new MacroInstruction();
-          ObjectFactory.Instance.ObjectStack.Push(instructions);
-          xmlHub.Process(configXmlStream);
-
-          if (ObjectFactory.Instance.ObjectStack.Count != 1)
-          {
-            throw new NotSupportedException("Something went wrong while parsing the configuration file.");
-          }
-
-          return instructions;
+          return ParseInstructions(configXmlStream);
         }
       }
 
       return new NullInstruction();
+    }
+
+    internal static Instruction ParseInstructions(Stream configXmlStream)
+    {
+      var xmlHub = new XmlHub(new HookConfigServiceLocator());
+
+      var instructions = new MacroInstruction();
+      ObjectFactory.Instance.ObjectStack.Push(instructions);
+      xmlHub.Process(configXmlStream);
+
+      if (ObjectFactory.Instance.ObjectStack.Count != 1)
+      {
+        throw new NotSupportedException("Something went wrong while parsing the configuration file.");
+      }
+
+      return instructions;
     }
   }
 }

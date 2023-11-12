@@ -23,14 +23,15 @@ namespace Silverseed.RepoCop.Subversion
 
   public class SvnLookRepoChangeInfo : IRepoChangeInfo
   {
-    public SvnLookRepoChangeInfo(HookType hookType, string author, string logMessage, long revision, DateTime time, ICollection<IRepoAffectedItem> affectedItems)
+    public SvnLookRepoChangeInfo(HookType hookType, string author, string logMessage, long revision, DateTime time, ICollection<IRepoAffectedItem> affectedItems, IReadOnlyCollection<string> capabilities)
     {
       this.HookType = hookType;
-      this.Author = author;
-      this.LogMessage = logMessage;
+      this.Author = author.Trim();
+      this.LogMessage = logMessage.Trim();
       this.Revision = revision;
       this.Time = time;
       this.AffectedItems = affectedItems;
+      this.ClientCapabilities = capabilities;
     }
 
     public HookType HookType { get; }
@@ -44,5 +45,8 @@ namespace Silverseed.RepoCop.Subversion
     public DateTime Time { get; }
 
     public ICollection<IRepoAffectedItem> AffectedItems { get; }
+
+    /// <inheritdoc />
+    public IReadOnlyCollection<string> ClientCapabilities { get; }
   }
 }

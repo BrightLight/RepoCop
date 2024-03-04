@@ -6,8 +6,11 @@
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>12.0</LangVersion>
+    <Title>Silverseed.RepoCop.Subversion</Title>
+    <Product>Silverseed.RepoCop</Product>
+    <Copyright>Copyright © 2014</Copyright>
+    <ComVisible>false</ComVisible>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
@@ -18,5 +21,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silverseed.RepoCop.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Silverseed.RepoCop.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 </Project>

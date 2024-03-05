@@ -11,7 +11,7 @@ build_script:
 test_script:
 - cmd: dotnet test source
 after_build:
-- cmd xcopy /E /I "bin/Release/Licenses" "publish/Licenses"
+- cmd: xcopy /E /I "bin/Release/Licenses" "publish/Licenses"
 - cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/publish/*
 artifacts:
 - path: Silverseed.RepoCop.zip

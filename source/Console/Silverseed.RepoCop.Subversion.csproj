@@ -21,4 +21,12 @@
       <_Parameter1>Silverseed.RepoCop.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\bin\Release\Examples\Silverseed.RepoCop.Subversion.HookConfig.xml" Link="Silverseed.RepoCop.Subversion.HookConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\bin\Release\Examples\Silverseed.RepoCop.Subversion.log4net.xml" Link="Silverseed.RepoCop.Subversion.log4net.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

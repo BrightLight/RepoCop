@@ -196,7 +196,7 @@ namespace Silverseed.RepoCop.Subversion
       }
       else
       {
-        Console.WriteLine($"Log4net configuration not found (expected: {log4netConfigFile.Name}");
+        Console.WriteLine($"Log4net configuration not found (expected: {log4netConfigFile.Name})");
         return false;
       }
     }

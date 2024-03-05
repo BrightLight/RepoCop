@@ -15,4 +15,3 @@ after_build:
 artifacts:
 - path: Silverseed.RepoCop.zip
   name: Silverseed.RepoCop.zip
-  

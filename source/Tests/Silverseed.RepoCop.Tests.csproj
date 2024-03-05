@@ -1,19 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;net8.0</TargetFrameworks>
     <ProjectGuid>{8979F2C3-637E-4FF3-90FA-091373824CC6}</ProjectGuid>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
+    <IsPublishable>False</IsPublishable>
+    <Title>Silverseed.RepoCop.Tests</Title>
+    <Product>Silverseed.RepoCop</Product>
+    <Copyright>Copyright © 2014</Copyright>
+    <ComVisible>false</ComVisible>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="stakx.Moq" Version="4.19.0" />
-    <PackageReference Include="WireMock.Net" Version="1.5.39" />
+    <PackageReference Include="WireMock.Net" Version="1.5.48" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Silverseed.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

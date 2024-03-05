@@ -41,7 +41,7 @@ namespace Silverseed.RepoCop.Tests
       var stream = new MemoryStream(byteArray);
       
       var instruction = HookManager.ParseInstructions(stream);
-      Assert.IsNotNull(instruction);
+      Assert.That(instruction, Is.Not.Null);
       var macroInstruction = instruction as MacroInstruction;
       Assert.That(macroInstruction, Is.Not.Null);
       var firstInstruction = macroInstruction.Instructions[0];

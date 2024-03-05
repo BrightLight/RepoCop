@@ -1,19 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;net8.0</TargetFrameworks>
     <ProjectGuid>{24207F82-238E-4B45-B1AE-9855D52DBAA9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
+    <Title>Silverseed.RepoCop.Subversion</Title>
+    <Product>Silverseed.RepoCop</Product>
+    <Copyright>Copyright © 2014</Copyright>
+    <ComVisible>false</ComVisible>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Polyfill" Version="1.29.0" />
+    <PackageReference Include="Polyfill" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silverseed.RepoCop.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Silverseed.RepoCop.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 </Project>

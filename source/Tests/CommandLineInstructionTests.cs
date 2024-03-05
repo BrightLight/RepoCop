@@ -38,7 +38,7 @@ namespace Silverseed.RepoCop.Tests
       commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 TextParam ErrorParam";
       var result = commandLineInstruction.Execute();
-      Assert.IsTrue(result);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Silverseed.RepoCop.Tests
       commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "5 TextParam";
       var result = commandLineInstruction.Execute();
-      Assert.IsFalse(result);
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Silverseed.RepoCop.Tests
       commandLineInstruction.Arguments = "22 TextParam";
       commandLineInstruction.ExpectedExitCode = 22;
       var result = commandLineInstruction.Execute();
-      Assert.IsTrue(result);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -73,11 +73,11 @@ namespace Silverseed.RepoCop.Tests
       commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 " + standardParameterText;
       var result = commandLineInstruction.Execute();
-      Assert.IsTrue(result);
+      Assert.That(result, Is.True);
       streamWriter.Flush();
       memoryStream.Position = 0;
       var streamReader = new StreamReader(memoryStream);
-      Assert.AreEqual(standardParameterText, streamReader.ReadToEnd());
+      Assert.That(streamReader.ReadToEnd(), Is.EqualTo(standardParameterText));
     }
 
     [Test]
@@ -91,11 +91,11 @@ namespace Silverseed.RepoCop.Tests
       commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
       commandLineInstruction.Arguments = "0 " + standardParameterText + " " + errorParameterText;
       var result = commandLineInstruction.Execute();
-      Assert.IsTrue(result);
+      Assert.That(result, Is.True);
       streamWriter.Flush();
       memoryStream.Position = 0;
       var streamReader = new StreamReader(memoryStream);
-      Assert.AreEqual(errorParameterText, streamReader.ReadToEnd().Trim());
+      Assert.That(streamReader.ReadToEnd().Trim(), Is.EqualTo(errorParameterText));
     }
 
     [Test]

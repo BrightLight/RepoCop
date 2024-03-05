@@ -6,12 +6,12 @@ before_build:
 build:
   verbosity: minimal
 build_script:
-- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
-- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -o publish/win-x64
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -o publish/linux-x64
 test_script:
 - cmd: dotnet test source
 after_build:
-- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/bin/Release/net8.0/win-x64/publish/*
+- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/publish/*
 artifacts:
 - path: Silverseed.RepoCop.zip
   name: Silverseed.RepoCop.zip

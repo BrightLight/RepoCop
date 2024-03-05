@@ -1,0 +1,17 @@
+version: 1.2.{build}
+image: Visual Studio 2022
+configuration:
+- Debug
+- Release
+before_build:
+- cmd: >-
+    cd source
+
+    nuget restore
+build:
+  verbosity: minimal
+after_build:
+- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\log4net.dll %APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\Silverseed.* "-x!%APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\Silverseed.RepoCop.Tests.*"
+artifacts:
+- path: Silverseed.RepoCop.zip
+  name: Silverseed.RepoCop.zip

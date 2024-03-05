@@ -1,17 +1,18 @@
 version: 1.2.{build}
 image: Visual Studio 2022
-configuration:
-- Debug
-- Release
+configuration: Release
 before_build:
-- cmd: >-
-    cd source
-
-    nuget restore
+- cmd: dotnet restore source
 build:
   verbosity: minimal
+build_script:
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true
+test_script:
+- cmd: dotnet test source
 after_build:
-- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\log4net.dll %APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\Silverseed.* "-x!%APPVEYOR_BUILD_FOLDER%\bin\Release\net8.0\Silverseed.RepoCop.Tests.*"
+- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/bin/Release/net8.0/win-x64/publish/*
 artifacts:
 - path: Silverseed.RepoCop.zip
   name: Silverseed.RepoCop.zip
+  

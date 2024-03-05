@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <ProjectGuid>{8979F2C3-637E-4FF3-90FA-091373824CC6}</ProjectGuid>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
-    <LangVersion>12.0</LangVersion>
     <IsPublishable>False</IsPublishable>
     <Title>Silverseed.RepoCop.Tests</Title>
     <Product>Silverseed.RepoCop</Product>

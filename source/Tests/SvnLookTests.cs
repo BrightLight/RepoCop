@@ -7,11 +7,13 @@
 namespace Silverseed.RepoCop.Tests
 {
   using System;
-  using System.Collections.Generic;
   using System.Linq;
   using NUnit.Framework;
   using Silverseed.RepoCop.Subversion;
 
+  /// <summary>
+  /// Tests for the <see cref="SvnLook"/> class.
+  /// </summary>
   [TestFixture]
   public class SvnLookTests
   {
@@ -30,20 +32,19 @@ namespace Silverseed.RepoCop.Tests
       Assert.That(path, Is.EqualTo("trunk/vendors/baker/bread.txt"));
     }
 
-    [Test]
-    public void TestItemActionParsing([Values("A ", "D ", "U ", "_U", "UU")] string svnAction)
+    /// <summary>
+    /// Tests the parsing of the action string.
+    /// </summary>
+    /// <param name="svnAction">The SVN action string.</param>
+    /// <returns>The parsed action.</returns>
+    [TestCase("A ", ExpectedResult = RepositoryItemAction.Add)]
+    [TestCase("D ", ExpectedResult = RepositoryItemAction.Delete)]
+    [TestCase("U ", ExpectedResult = RepositoryItemAction.Modify)]
+    [TestCase("_U", ExpectedResult = RepositoryItemAction.Modify)]
+    [TestCase("UU", ExpectedResult = RepositoryItemAction.Modify)]
+    public RepositoryItemAction TestItemActionParsing(string svnAction)
     {
-      var expected = new Dictionary<string, RepositoryItemAction> {
-        { "A ", RepositoryItemAction.Add },
-        { "D ", RepositoryItemAction.Delete },
-        { "U ", RepositoryItemAction.Modify },
-        { "_U", RepositoryItemAction.Modify },
-        { "UU", RepositoryItemAction.Modify },
-      };
-
-      var result = SvnLook.ParseAction(svnAction);
-      Assert.That(result, Is.Not.EqualTo(RepositoryItemAction.None));
-      Assert.That(result, Is.EqualTo(expected[svnAction]));
+      return SvnLook.ParseAction(svnAction);
     }
 
     [Test]

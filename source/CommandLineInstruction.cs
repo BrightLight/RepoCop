@@ -77,18 +77,16 @@ namespace Silverseed.RepoCop
 
     protected override bool InternalExecute()
     {
-      if (this.ExecutionMode == ExecutionMode.WaitForExit)
+      switch (ExecutionMode)
       {
-        return this.ExecuteWaitForExitInstruction();
+        case ExecutionMode.WaitForExit:
+          return ExecuteWaitForExitInstruction();
+        case ExecutionMode.FireAndForget:
+          return ExecuteFireAndForgetInstruction();
+        default:
+          log.ErrorFormat("Could not process commandline instruction [{0}]!\nUnsupported execution mode [{1}]", this.FileName, this.ExecutionMode);
+          return false;
       }
-
-      if (this.ExecutionMode == ExecutionMode.FireAndForget)
-      {
-        return this.ExecuteFireAndForgetInstruction();
-      }
-
-      log.ErrorFormat("Could not process commandline instruction [{0}]!\nUnsupported execution mode [{1}]", this.FileName, this.ExecutionMode);
-      return false;
     }
 
     private bool ExecuteFireAndForgetInstruction()

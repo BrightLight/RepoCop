@@ -31,11 +31,10 @@ namespace Silverseed.RepoCop
     /// </summary>
     private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-    public static bool Validate(out string instructionsAsText)
+    public static bool Validate(Instruction instructions, out string instructionsAsText)
     {
       try
       {
-        var instructions = BuildInstructions();
         instructionsAsText = instructions.ToString();
         return true;
       }
@@ -47,14 +46,13 @@ namespace Silverseed.RepoCop
       }
     }
 
-    public static bool Execute(IRepoChangeInfo repoChangeInfo)
+    public static bool Execute(Instruction instructions, IRepoChangeInfo repoChangeInfo)
     {
-      var instructions = BuildInstructions();
       RepositoryInfoHub.Instance.RepoChangeInfo = repoChangeInfo;
       return instructions.Execute();
     }
 
-    private static string FindHookConfigurationFile()
+    public static string FindHookConfigurationFile()
     {
       var configurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName);
       if (configurationFile.Contains(".vshost."))
@@ -69,25 +67,10 @@ namespace Silverseed.RepoCop
     /// Builds the instructions according to the hook configuration file.
     /// </summary>
     /// <returns>A <see cref="MacroInstruction"/> containing all the defined instructions.</returns>
-    private static Instruction BuildInstructions()
+    public static Instruction ReadHookConfigurationFile(string configurationFile)
     {
-      var configurationFile = FindHookConfigurationFile();
-      return ParseInstructions(configurationFile);
-    }
-
-    private static Instruction ParseInstructions(string configurationFile)
-    {
-      log.DebugFormat("Looking for configuration file {0}", configurationFile);
-      if (File.Exists(configurationFile))
-      {
-        log.Debug("Configuration file found.");
-        using (var configXmlStream = new FileStream(configurationFile, FileMode.Open, FileAccess.Read))
-        {
-          return ParseInstructions(configXmlStream);
-        }
-      }
-
-      return new NullInstruction();
+      using var configXmlStream = new FileStream(configurationFile, FileMode.Open, FileAccess.Read);
+      return ParseInstructions(configXmlStream);
     }
 
     internal static Instruction ParseInstructions(Stream configXmlStream)

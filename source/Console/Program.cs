@@ -69,12 +69,20 @@ namespace Silverseed.RepoCop.Subversion
           return;
         }
 
+        var configurationFile = HookManager.FindHookConfigurationFile();
+        if (!File.Exists(configurationFile))
+        {
+          Console.Error.WriteLine($"Configuration file was not found ({configurationFile}).");
+          Environment.ExitCode = 4;
+          return;
+        }
+
+        var instructions = HookManager.ReadHookConfigurationFile(configurationFile);
         IRepoChangeInfo repoChangeInfo = null;
-        string repositoryPath;
         switch (actionArgument)
         {
           case "validate":
-            if (HookManager.Validate(out var text))
+            if (HookManager.Validate(instructions, out var text))
             {
               Console.Out.WriteLine("Configuration file was successfully parsed.");
               Console.Out.WriteLine(text);
@@ -90,7 +98,7 @@ namespace Silverseed.RepoCop.Subversion
           case "start-commit":
             if (args.Length > 3)
             {
-              repositoryPath = args[1];
+              var repositoryPath = args[1];
               var username = args[2];
               var capabilities = args[3];
               log.Debug("start-commit hook using these settings:");
@@ -109,7 +117,7 @@ namespace Silverseed.RepoCop.Subversion
           case "pre-commit":
             if (args.Length > 2)
             {
-              repositoryPath = args[1];
+              var repositoryPath = args[1];
               var transaction = args[2];
               repoChangeInfo = SvnLook.Transaction(HookType.PreCommit, repositoryPath, transaction);
             }
@@ -122,7 +130,7 @@ namespace Silverseed.RepoCop.Subversion
           case "post-commit":
             if (args.Length > 2)
             {
-              repositoryPath = args[1];
+              var repositoryPath = args[1];
               if (long.TryParse(args[2], out var revision))
               {
                 repoChangeInfo = SvnLook.Revision(HookType.PostCommit, repositoryPath, revision);
@@ -145,7 +153,7 @@ namespace Silverseed.RepoCop.Subversion
         }
 
         if (repoChangeInfo != null
-            && !HookManager.Execute(repoChangeInfo))
+            && !HookManager.Execute(instructions, repoChangeInfo))
         {
           Environment.ExitCode = 1;
         }

@@ -26,17 +26,22 @@ namespace Silverseed.RepoCop.Tests
   using NUnit.Framework;
   using System.Diagnostics;
 
+  /// <summary>
+  /// Unit tests for the <see cref="CommandLineInstruction"/> class.
+  /// </summary>
   [TestFixture]
   public class CommandLineInstructionTests
   {
-    const string BatchFileName = "EchoParams.bat";
+    private const string BatchFileName = "EchoParams.bat";
 
     [Test]
     public void ExpectedExitCode0Test()
     {
-      var commandLineInstruction = new CommandLineInstruction();
-      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
-      commandLineInstruction.Arguments = "0 TextParam ErrorParam";
+      var commandLineInstruction = new CommandLineInstruction
+      {
+        FileName = BuildFullFileNameWithPath(BatchFileName),
+        Arguments = "0 TextParam ErrorParam",
+      };
       var result = commandLineInstruction.Execute();
       Assert.That(result, Is.True);
     }
@@ -44,21 +49,26 @@ namespace Silverseed.RepoCop.Tests
     [Test]
     public void ExitCodeDiffersFromExpectedExitCodeMustFail()
     {
-      var commandLineInstruction = new CommandLineInstruction();
-      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
-      commandLineInstruction.Arguments = "5 TextParam";
-      var result = commandLineInstruction.Execute();
+      var commandLineInstruction = new CommandLineInstruction
+      {
+        FileName = BuildFullFileNameWithPath(BatchFileName),
+        Arguments = "5 TextParam",
+      };
+
+    var result = commandLineInstruction.Execute();
       Assert.That(result, Is.False);
     }
 
     [Test]
     public void ExpectedExitCodeDiffersFrom0Test()
     {
-      var commandLineInstruction = new CommandLineInstruction();
       var batchFile = BuildFullFileNameWithPath(BatchFileName);
-      commandLineInstruction.FileName = batchFile;
-      commandLineInstruction.Arguments = "22 TextParam";
-      commandLineInstruction.ExpectedExitCode = 22;
+      var commandLineInstruction = new CommandLineInstruction
+      {
+        FileName = batchFile,
+        Arguments = "22 TextParam",
+        ExpectedExitCode = 22,
+      };
       var result = commandLineInstruction.Execute();
       Assert.That(result, Is.True);
     }
@@ -69,9 +79,11 @@ namespace Silverseed.RepoCop.Tests
       const string standardParameterText = "TextParam";
       var memoryStream = new MemoryStream();
       var streamWriter = new StreamWriter(memoryStream);
-      var commandLineInstruction = new CommandLineInstruction(streamWriter, null);
-      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
-      commandLineInstruction.Arguments = "0 " + standardParameterText;
+      var commandLineInstruction = new CommandLineInstruction(streamWriter, null)
+      {
+        FileName = BuildFullFileNameWithPath(BatchFileName),
+        Arguments = "0 " + standardParameterText,
+      };
       var result = commandLineInstruction.Execute();
       Assert.That(result, Is.True);
       streamWriter.Flush();
@@ -87,10 +99,13 @@ namespace Silverseed.RepoCop.Tests
       const string errorParameterText = "\"An error has occured\"";
       var memoryStream = new MemoryStream();
       var streamWriter = new StreamWriter(memoryStream);
-      var commandLineInstruction = new CommandLineInstruction(null, streamWriter);
-      commandLineInstruction.FileName = BuildFullFileNameWithPath(BatchFileName);
-      commandLineInstruction.Arguments = "0 " + standardParameterText + " " + errorParameterText;
-      var result = commandLineInstruction.Execute();
+      var commandLineInstruction = new CommandLineInstruction(null, streamWriter)
+      {
+        FileName = BuildFullFileNameWithPath(BatchFileName),
+        Arguments = "0 " + standardParameterText + " " + errorParameterText,
+      };
+
+    var result = commandLineInstruction.Execute();
       Assert.That(result, Is.True);
       streamWriter.Flush();
       memoryStream.Position = 0;
@@ -101,9 +116,11 @@ namespace Silverseed.RepoCop.Tests
     [Test]
     public void NewLinesAreReplacedWithEmptySpace()
     {
-      var commandLineInstruction = new CommandLineInstructionTest();
-      commandLineInstruction.FileName = "Foo";
-      commandLineInstruction.Arguments = "first line" + Environment.NewLine + "second line" + Environment.NewLine + "third line";
+      var commandLineInstruction = new CommandLineInstructionTest
+      {
+        FileName = "Foo",
+        Arguments = "first line" + Environment.NewLine + "second line" + Environment.NewLine + "third line",
+      };
       var processStartInfo = commandLineInstruction.CreateProcessStartInfo();
       Assert.That(processStartInfo, Is.Not.Null);
       Assert.That(processStartInfo.Arguments, Is.EqualTo("first line second line third line"));

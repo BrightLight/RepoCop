@@ -159,8 +159,8 @@ namespace Silverseed.RepoCop
     /// </summary>
     public string NewLineReplacement { get; set; }
 
-    private TextWriter StandardOutput { get; set; }
+    private TextWriter StandardOutput { get; }
 
-    private TextWriter ErrorOutput { get; set; }
+    private TextWriter ErrorOutput { get; }
   }
 }

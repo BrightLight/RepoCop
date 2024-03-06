@@ -1,0 +1,18 @@
+version: 1.2.{build}
+image: Visual Studio 2022
+configuration: Release
+before_build:
+- cmd: dotnet restore source
+build:
+  verbosity: minimal
+build_script:
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish/win-x64
+- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o publish/linux-x64
+test_script:
+- cmd: dotnet test source --test-adapter-path:. --logger:Appveyor
+after_build:
+- cmd: xcopy /E /I "bin/Release/Licenses" "publish/Licenses"
+- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/publish/*
+artifacts:
+- path: Silverseed.RepoCop.zip
+  name: Silverseed.RepoCop.zip

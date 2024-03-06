@@ -33,11 +33,14 @@ namespace Silverseed.RepoCop.Subversion
 
     static void Main(string[] args)
     {
-      InitializeLog4Net();
+      if (!InitializeLog4Net())
+      {
+        Environment.ExitCode = 1;
+        return;
+      }
+
       try
       {
-        ////args = new string[] { "pre", @"C:\temp\DummyRepo\", "kilgkfhb" };
-        ////args = new string[] { "post-commit", @"C:\temp\repositories\dummy", "35" };
         log.DebugFormat("{0} started", AppDomain.CurrentDomain.FriendlyName);
         if (args.Length > 2)
         {
@@ -116,7 +119,7 @@ namespace Silverseed.RepoCop.Subversion
               }
               else
               {
-                System.Console.Error.WriteLine("Could not parse {0} as revision number.", args[2]);
+                Console.Error.WriteLine("Could not parse {0} as revision number.", args[2]);
                 Environment.ExitCode = 2;
               }
             }
@@ -127,7 +130,7 @@ namespace Silverseed.RepoCop.Subversion
 
             break;
           default:
-            System.Console.Error.WriteLine("Unsupported hook type. Use either pre oder post as first argument.");
+            Console.Error.WriteLine("Unsupported hook type. Supported types are \"start-commit\", \"pre-commit\" and \"post-commit\".");
             break;
         }
 
@@ -177,7 +180,7 @@ namespace Silverseed.RepoCop.Subversion
     /// <summary>
     /// Initialize log4net.
     /// </summary>
-    private static void InitializeLog4Net()
+    private static bool InitializeLog4Net()
     {
       var executableName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName);
       if (executableName.Contains(".vshost."))
@@ -189,10 +192,12 @@ namespace Silverseed.RepoCop.Subversion
       if (log4netConfigFile.Exists)
       {
         log4net.Config.XmlConfigurator.ConfigureAndWatch(log4netConfigFile);
+        return true;
       }
       else
       {
-        log4net.Config.XmlConfigurator.Configure();
+        Console.WriteLine($"Log4net configuration not found (expected: {log4netConfigFile.Name})");
+        return false;
       }
     }
 

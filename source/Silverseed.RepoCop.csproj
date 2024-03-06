@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <ProjectGuid>{2AAF5A91-5777-4AE1-91F6-A4C98DABEB32}</ProjectGuid>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <LangVersion>12.0</LangVersion>
     <Title>Silverseed.RepoCop</Title>
     <Product>Silverseed.RepoCop</Product>
     <Copyright>Copyright © 2014</Copyright>
@@ -13,11 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Polyfill" Version="3.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Silverseed.Core">

@@ -20,19 +20,33 @@ namespace Silverseed.RepoCop
 {
   using System;
 
+  /// <summary>
+  /// An instruction that always fails (and thus aborts) the commit.
+  /// </summary>
   internal class FailInstruction : Instruction
   {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FailInstruction"/> class.
+    /// </summary>
+    /// <param name="message">The message that will be sent back to the committer when this instruction is executed.</param> 
     public FailInstruction(string message)
     {
       this.Message = message;
     }
 
+    /// <summary>
+    /// Executes this instruction.
+    /// </summary>
+    /// <returns><c>false</c> to indicate that the commit should be aborted.</returns>
     protected override bool InternalExecute()
     {
       Console.Error.WriteLine(RepositoryInfoHub.Instance.ParseTokens(this.Message));
       return false; // this instruction always fails (hence its name)
     }
 
+    /// <summary>
+    /// Gets or sets the message that will be sent back to the committer when this instruction is executed.
+    /// </summary>
     public string Message { get; set; }
   }
 }

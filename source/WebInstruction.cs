@@ -39,20 +39,16 @@ namespace Silverseed.RepoCop
         var handler = new HttpClientHandler();
         handler.ServerCertificateCustomValidationCallback = (requestMessage, certificate, chain, policyErrors) => true;
 
-        using (var httpClient = new HttpClient(handler))
-        {
-          var requestUri = RepositoryInfoHub.Instance.ParseTokens(this.Url);
-          using (var request = new HttpRequestMessage(new HttpMethod(this.HttpMethod), requestUri))
-          {
-            var content = RepositoryInfoHub.Instance.ParseTokens(this.Content);
-            request.Content = new StringContent(content);
-            request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
+        using var httpClient = new HttpClient(handler);
+        var requestUri = RepositoryInfoHub.Instance.ParseTokens(this.Url);
+        using var request = new HttpRequestMessage(new HttpMethod(this.HttpMethod), requestUri);
+        var content = RepositoryInfoHub.Instance.ParseTokens(this.Content);
+        request.Content = new StringContent(content);
+        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
 
-            var response = httpClient.SendAsync(request);
-            Console.Out.WriteLine($"{response.Result}");
-            return response.Result.IsSuccessStatusCode;
-          }
-        }
+        var response = httpClient.SendAsync(request);
+        Console.Out.WriteLine($"{response.Result}");
+        return response.Result.IsSuccessStatusCode;
       }
       catch(Exception exception)
       {

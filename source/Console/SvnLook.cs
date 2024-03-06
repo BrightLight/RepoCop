@@ -27,6 +27,9 @@ namespace Silverseed.RepoCop.Subversion
   using System.Text.RegularExpressions;
   using log4net;
 
+  /// <summary>
+  /// Provides methods to interact with the Subversion repository using the svnlook command line tool.
+  /// </summary>
   public static class SvnLook
   {
     private const string CmdAuthor = "author";
@@ -46,19 +49,26 @@ namespace Silverseed.RepoCop.Subversion
       svnBinFolder = folder;
     }
 
-    public static IRepoChangeInfo Revision(HookType hookType, string repository, long revision)
+    /// <summary>
+    /// Retrieves information (author, log message, date, etc.) of a specified revision.
+    /// </summary>
+    /// <param name="hookType">The type of hook for which RepoCop was called.</param>
+    /// <param name="repositoryPath">The path to the repository.</param>
+    /// <param name="revision">The revision for which to retrieve the information.</param>
+    /// <returns>Information about the requested <paramref name="revision"/>.</returns>
+    public static IRepoChangeInfo Revision(HookType hookType, string repositoryPath, long revision)
     {
-      if (!TryToGetCommandOutput(RevCommand(repository, revision, CmdAuthor), out var author))
+      if (!TryToGetCommandOutput(RevCommand(repositoryPath, revision, CmdAuthor), out var author))
       {
         return null;
       }
 
-      if (!TryToGetCommandOutput(RevCommand(repository, revision, CmdLog), out var svnlog))
+      if (!TryToGetCommandOutput(RevCommand(repositoryPath, revision, CmdLog), out var svnlog))
       {
         return null;
       }
 
-      if (!TryToGetCommandOutput(RevCommand(repository, revision, CmdDate), out var date))
+      if (!TryToGetCommandOutput(RevCommand(repositoryPath, revision, CmdDate), out var date))
       {
         return null;
       }
@@ -66,7 +76,7 @@ namespace Silverseed.RepoCop.Subversion
       date = ParseDateTimeOffsetString(date).Trim();
       var offset = DateTimeOffset.Parse(date);
 
-      var items = GetAffectedItems(repository, revision);
+      var items = GetAffectedItems(repositoryPath, revision);
       if (items.Count == 0)
       {
         return null;
@@ -75,19 +85,26 @@ namespace Silverseed.RepoCop.Subversion
       return new SvnLookRepoChangeInfo(hookType, author, svnlog, revision, offset.DateTime, items, Array.Empty<string>());
     }
 
-    public static IRepoChangeInfo Transaction(HookType hookType, string repository, string transaction)
+    /// <summary>
+    /// Retrieves information (author, log message, date, etc.) of a specified transaction.
+    /// </summary>
+    /// <param name="hookType">The type of hook for which RepoCop was called.</param>
+    /// <param name="repositoryPath">The path to the repository.</param>
+    /// <param name="revision">The revision for which to retrieve the information.</param>
+    /// <returns>Information about the requested <paramref name="transaction"/>.</returns>
+    public static IRepoChangeInfo Transaction(HookType hookType, string repositoryPath, string transaction)
     {
-      if (!TryToGetCommandOutput(RevTransaction(repository, transaction, CmdAuthor), out var author))
+      if (!TryToGetCommandOutput(RevTransaction(repositoryPath, transaction, CmdAuthor), out var author))
       {
         return null;
       }
 
-      if (!TryToGetCommandOutput(RevTransaction(repository, transaction, CmdLog), out var svnlog))
+      if (!TryToGetCommandOutput(RevTransaction(repositoryPath, transaction, CmdLog), out var svnlog))
       {
         return null;
       }
 
-      if (!TryToGetCommandOutput(RevTransaction(repository, transaction, CmdDate), out var date))
+      if (!TryToGetCommandOutput(RevTransaction(repositoryPath, transaction, CmdDate), out var date))
       {
         return null;
       }
@@ -95,7 +112,7 @@ namespace Silverseed.RepoCop.Subversion
       date = ParseDateTimeOffsetString(date).Trim();
       var offset = DateTimeOffset.Parse(date);
 
-      var items = GetAffectedItems(repository, transaction);
+      var items = GetAffectedItems(repositoryPath, transaction);
       if (items.Count == 0)
       {
         return null;
@@ -104,17 +121,31 @@ namespace Silverseed.RepoCop.Subversion
       return new SvnLookRepoChangeInfo(hookType, author, svnlog, -1, offset.DateTime, items, Array.Empty<string>());
     }
 
-    private static ICollection<IRepoAffectedItem> GetAffectedItems(string repository, long rev)
+    /// <summary>
+    /// Retrieves the affected items of the specified <paramref name="revision"/> by calling
+    /// "svnlook changed the_repository --revision the_revision --copy-info".
+    /// </summary>
+    /// <param name="repositoryPath">The path to the repository.</param>
+    /// <param name="revision">The revision for which to retrieve the information.</param>
+    /// <returns>A collection of all affected items.</returns>
+    private static IReadOnlyCollection<IRepoAffectedItem> GetAffectedItems(string repositoryPath, long revision)
     {
-      return !TryToGetCommandOutput(RevCommand(repository, rev, CmdChanged, CmdArgCopyInfo), out var changed) ? new List<IRepoAffectedItem>() : ParseAffectedItems(changed);
+      return !TryToGetCommandOutput(RevCommand(repositoryPath, revision, CmdChanged, CmdArgCopyInfo), out var changed) ? new List<IRepoAffectedItem>() : ParseAffectedItems(changed);
     }
 
-    private static ICollection<IRepoAffectedItem> GetAffectedItems(string repository, string transaction)
+    /// <summary>
+    /// Retrieves the affected items of the specified <paramref name="transaction"/> by calling
+    /// "svnlook changed the_repository --transaction the_revision --copy-info".
+    /// </summary>
+    /// <param name="repositoryPath">The path to the repository.</param>
+    /// <param name="transaction">The transaction for which to retrieve the information.</param>
+    /// <returns>A collection of all affected items.</returns>
+    private static IReadOnlyCollection<IRepoAffectedItem> GetAffectedItems(string repository, string transaction)
     {
       return !TryToGetCommandOutput(RevTransaction(repository, transaction, CmdChanged, CmdArgCopyInfo), out var changed) ? new List<IRepoAffectedItem>() : ParseAffectedItems(changed);
     }
 
-    internal static ICollection<IRepoAffectedItem> ParseAffectedItems(string changed)
+    internal static IReadOnlyCollection<IRepoAffectedItem> ParseAffectedItems(string changed)
     {
       const int ActionLength = 2;
 

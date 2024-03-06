@@ -21,9 +21,22 @@ namespace Silverseed.RepoCop.Subversion
   using System;
   using System.Collections.Generic;
 
+  /// <summary>
+  /// Represents the information about a change in a Subversion repository.
+  /// </summary>
   public class SvnLookRepoChangeInfo : IRepoChangeInfo
   {
-    public SvnLookRepoChangeInfo(HookType hookType, string author, string logMessage, long revision, DateTime time, ICollection<IRepoAffectedItem> affectedItems, IReadOnlyCollection<string> capabilities)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SvnLookRepoChangeInfo"/> class.
+    /// </summary>
+    /// <param name="hookType">The type of the hook for which RepoCop was called.</param>
+    /// <param name="author">The author of the change.</param>
+    /// <param name="logMessage">The log message of the change.</param>
+    /// <param name="revision">The revision of the change.</param>
+    /// <param name="time">The timestamp of the change.</param>
+    /// <param name="affectedItems">All affected items of the change.</param>
+    /// <param name="capabilities">The capabilities of the client that connects to the SCM server.</param>
+    public SvnLookRepoChangeInfo(HookType hookType, string author, string logMessage, long revision, DateTime time, IReadOnlyCollection<IRepoAffectedItem> affectedItems, IReadOnlyCollection<string> capabilities)
     {
       this.HookType = hookType;
       this.Author = author.Trim();
@@ -34,17 +47,23 @@ namespace Silverseed.RepoCop.Subversion
       this.ClientCapabilities = capabilities;
     }
 
+    /// <inheritdoc />
     public HookType HookType { get; }
 
+    /// <inheritdoc />
     public string Author { get; }
 
+    /// <inheritdoc />
     public string LogMessage { get; }
 
+    /// <inheritdoc />
     public long Revision { get; }
 
+    /// <inheritdoc />
     public DateTime Time { get; }
 
-    public ICollection<IRepoAffectedItem> AffectedItems { get; }
+    /// <inheritdoc />
+    public IReadOnlyCollection<IRepoAffectedItem> AffectedItems { get; }
 
     /// <inheritdoc />
     public IReadOnlyCollection<string> ClientCapabilities { get; }

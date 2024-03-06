@@ -21,6 +21,9 @@ namespace Silverseed.RepoCop
   using System;
   using System.Collections.Generic;
 
+  /// <summary>
+  /// A condition that checks if the author of a change matches a given author(s).
+  /// </summary>
   internal class AuthorCondition : RepositoryInfoHubCondition
   {
     private readonly List<string> authors = new List<string>();

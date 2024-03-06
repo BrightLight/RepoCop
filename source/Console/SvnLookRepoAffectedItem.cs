@@ -18,8 +18,17 @@
 
 namespace Silverseed.RepoCop.Subversion
 {
+  /// <summary>
+  /// Represents an item that was affected by a change in a repository.
+  /// </summary>
   public class SvnLookRepoAffectedItem : IRepoAffectedItem
   {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SvnLookRepoAffectedItem"/> class.
+    /// </summary>
+    /// <param name="action">The action that was performed on the item.</param>
+    /// <param name="nodeKind">The kind of the item (file or directory).</param>
+    /// <param name="path">The path of the item within the repository.</param>
     public SvnLookRepoAffectedItem(RepositoryItemAction action, RepositoryItemNodeKind nodeKind, string path)
     {
       this.Action = action;
@@ -27,10 +36,13 @@ namespace Silverseed.RepoCop.Subversion
       this.Path = path;
     }
 
+    /// <inheritdoc />
     public RepositoryItemAction Action { get; set; }
 
+    /// <inheritdoc />
     public RepositoryItemNodeKind NodeKind { get; set; }
 
+    /// <inheritdoc />
     public string Path { get; set; }
   }
 }

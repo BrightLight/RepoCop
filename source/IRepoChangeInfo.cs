@@ -20,50 +20,45 @@ namespace Silverseed.RepoCop
 {
   using System;
   using System.Collections.Generic;
-  using System.Linq;
-  using System.Text;
 
+  /// <summary>
+  /// Represents the information about a change in a repository.
+  /// </summary>
   public interface IRepoChangeInfo
   {
+    /// <summary>
+    /// Gets the type of the hook for which RepoCop was called.
+    /// </summary>
     HookType HookType { get; }
+
+    /// <summary>
+    /// Gets the author of the change.
+    /// </summary>
     string Author { get; }
+
+    /// <summary>
+    /// Gets the log message of the change.
+    /// </summary>
     string LogMessage { get; }
+
+    /// <summary>
+    /// Gets the revision of the change.
+    /// </summary>
     long Revision { get; }
+
+    /// <summary>
+    /// Gets the timestamp of the change.
+    /// </summary>
     DateTime Time { get; }
-    ICollection<IRepoAffectedItem> AffectedItems { get; }
+
+    /// <summary>
+    /// Gets all affected items of the change.
+    /// </summary>
+    IReadOnlyCollection<IRepoAffectedItem> AffectedItems { get; }
 
     /// <summary>
     /// Gets the capabilities of the client that connects to the SCM server. 
     /// </summary>
     IReadOnlyCollection<string> ClientCapabilities { get; }
-  }
-
-  public interface IRepoAffectedItem
-  {
-    RepositoryItemAction Action { get; }
-    RepositoryItemNodeKind NodeKind { get; }
-    string Path { get; }
-  }
-
-  public enum RepositoryItemAction
-  {
-    None,
-
-    Add,
-
-    Delete,
-
-    Modify,
-
-    Replace
-  }
-
-  public enum RepositoryItemNodeKind
-  {
-    Unknown,
-
-    File,
-
-    Directory
   }
 }

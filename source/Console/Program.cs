@@ -22,6 +22,9 @@ namespace Silverseed.RepoCop.Subversion
   using System.IO;
   using log4net;
 
+  /// <summary>
+  /// Represents the entry point of the application.
+  /// </summary>
   class Program
   {
     /// <summary>
@@ -29,8 +32,15 @@ namespace Silverseed.RepoCop.Subversion
     /// </summary>
     private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+    /// <summary>
+    /// The name of the command line parameter that specifies the path to the SVN binary folder.
+    /// </summary>
     private const string SvnBinParamKey = "-svnbin";
 
+    /// <summary>
+    /// The entry point of the application.
+    /// </summary>
+    /// <param name="args">The command line parameters.</param>
     static void Main(string[] args)
     {
       if (!InitializeLog4Net())
@@ -101,7 +111,7 @@ namespace Silverseed.RepoCop.Subversion
             {
               repositoryPath = args[1];
               var transaction = args[2];
-              repoChangeInfo = GetPreCommitRepoChangeInfo(repositoryPath, transaction);
+              repoChangeInfo = SvnLook.Transaction(HookType.PreCommit, repositoryPath, transaction);
             }
             else
             {
@@ -115,7 +125,7 @@ namespace Silverseed.RepoCop.Subversion
               repositoryPath = args[1];
               if (long.TryParse(args[2], out var revision))
               {
-                repoChangeInfo = GetPostCommitRepoChangeInfo(repositoryPath, revision);
+                repoChangeInfo = SvnLook.Revision(HookType.PostCommit, repositoryPath, revision);
               }
               else
               {
@@ -147,6 +157,11 @@ namespace Silverseed.RepoCop.Subversion
       }
     }
 
+    /// <summary>
+    /// Processes the command line parameters that were passed to the application.
+    /// </summary>
+    /// <param name="args">The command line parameters.</param>
+    /// <returns><c>true</c> if the parameters were processed successfully; otherwise <c>false</c>.</returns></returns>
     private static bool ProcessParameters(params string[] args)
     {
       const int CustomParamStartIndex = 3;
@@ -199,16 +214,6 @@ namespace Silverseed.RepoCop.Subversion
         Console.WriteLine($"Log4net configuration not found (expected: {log4netConfigFile.Name})");
         return false;
       }
-    }
-
-    private static IRepoChangeInfo GetPreCommitRepoChangeInfo(string repositoryPath, string transactionName)
-    {
-      return SvnLook.Transaction(HookType.PreCommit, repositoryPath, transactionName);
-    }
-
-    private static IRepoChangeInfo GetPostCommitRepoChangeInfo(string repositoryPath, long revision)
-    {
-      return SvnLook.Revision(HookType.PostCommit, repositoryPath, revision);
     }
   }
 }

@@ -49,18 +49,18 @@ namespace Silverseed.RepoCop.Tests
     [Test]
     public void TestEvaluateNodeKind()
     {
-      Assert.That(SvnLook.EvaluateNodeKind("/test/"), Is.EqualTo(RepositoryItemNodeKind.Directory));
-      Assert.That(SvnLook.EvaluateNodeKind("test/"), Is.EqualTo(RepositoryItemNodeKind.Directory));
-      Assert.That(SvnLook.EvaluateNodeKind("test\\"), Is.EqualTo(RepositoryItemNodeKind.Directory));
-      Assert.That(SvnLook.EvaluateNodeKind("\\test\\test\\"), Is.EqualTo(RepositoryItemNodeKind.Directory));
+      Assert.That(SvnLook.DetermineNodeKind("/test/"), Is.EqualTo(RepositoryItemNodeKind.Directory));
+      Assert.That(SvnLook.DetermineNodeKind("test/"), Is.EqualTo(RepositoryItemNodeKind.Directory));
+      Assert.That(SvnLook.DetermineNodeKind("test\\"), Is.EqualTo(RepositoryItemNodeKind.Directory));
+      Assert.That(SvnLook.DetermineNodeKind("\\test\\test\\"), Is.EqualTo(RepositoryItemNodeKind.Directory));
 
-      Assert.That(SvnLook.EvaluateNodeKind("/test"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("test/test.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("/test/.test"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("\\test"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("\\test\\_"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("\\test\\_.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
-      Assert.That(SvnLook.EvaluateNodeKind("\\test\\.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("/test"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("test/test.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("/test/.test"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("\\test"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("\\test\\_"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("\\test\\_.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
+      Assert.That(SvnLook.DetermineNodeKind("\\test\\.txt"), Is.EqualTo(RepositoryItemNodeKind.File));
     }
 
     [Test]

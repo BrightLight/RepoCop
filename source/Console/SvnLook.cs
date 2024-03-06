@@ -170,7 +170,7 @@ namespace Silverseed.RepoCop.Subversion
           continue;
         }
 
-        var nodeKind = EvaluateNodeKind(path);
+        var nodeKind = DetermineNodeKind(path);
         var action = ParseAction(line.Substring(0, ActionLength));
         if (action == RepositoryItemAction.None)
         {
@@ -213,7 +213,12 @@ namespace Silverseed.RepoCop.Subversion
       return items.Distinct().ToList();
     }
 
-    internal static RepositoryItemNodeKind EvaluateNodeKind(string path)
+    /// <summary>
+    /// Determines the kind of the node (file or directory) based on the provided <paramref name="path"/>.
+    /// </summary>
+    /// <param name="path">The path of the node.</param>
+    /// <returns>The kind of the node (file or directory).</returns>
+    internal static RepositoryItemNodeKind DetermineNodeKind(string path)
     {
       // if has trailing slash then it's a directory
       return new[] { "\\", "/" }.Any(path.EndsWith) ? RepositoryItemNodeKind.Directory : RepositoryItemNodeKind.File;

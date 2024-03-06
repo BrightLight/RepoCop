@@ -7,12 +7,11 @@ build:
   verbosity: minimal
 build_script:
 - cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish/win-x64
-- cmd: dotnet publish source/Console/Silverseed.RepoCop.Subversion.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o publish/linux-x64
 test_script:
 - cmd: dotnet test source --test-adapter-path:. --logger:Appveyor
 after_build:
 - cmd: xcopy /E /I "bin/Release/Licenses" "publish/Licenses"
-- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/publish/*
+- cmd: 7z a %APPVEYOR_BUILD_FOLDER%\Silverseed.RepoCop.zip %APPVEYOR_BUILD_FOLDER%/publish/win-x64*
 artifacts:
 - path: Silverseed.RepoCop.zip
   name: Silverseed.RepoCop.zip

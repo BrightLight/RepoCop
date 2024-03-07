@@ -64,7 +64,7 @@ namespace Silverseed.RepoCop.Tests.Resources {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;configuration&gt;
         ///  &lt;!-- Start-Commit instructions --&gt;
-        ///  &lt;Instructions&gt;     
+        ///  &lt;Instructions&gt;
         ///    &lt;CapabilityCondition Capability=&quot;MergeInfo&quot; /&gt;
         ///  &lt;/Instructions&gt;
         ///&lt;/configuration&gt;
@@ -73,6 +73,22 @@ namespace Silverseed.RepoCop.Tests.Resources {
         internal static string CapabilityConfigTest {
             get {
                 return ResourceManager.GetString("CapabilityConfigTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;!-- Start-Commit instructions --&gt;
+        ///  &lt;Instructions&gt;
+        ///    &lt;CapabilityCondition Capability=&quot;MergeInfo&quot; /&gt;
+        ///  &lt;/Instructions&gt;
+        ///&lt;/configuration&gt;
+        ///.
+        /// </summary>
+        internal static string FullFeatureConfigTest {
+            get {
+                return ResourceManager.GetString("FullFeatureConfigTest", resourceCulture);
             }
         }
     }

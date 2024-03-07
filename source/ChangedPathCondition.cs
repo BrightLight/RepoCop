@@ -29,7 +29,7 @@ namespace Silverseed.RepoCop
 
     public ChangedPathCondition(string path)
     {
-      this.changedPathRegExPattern = new Regex(path, RegexOptions.Compiled);
+      this.changedPathRegExPattern = new Regex(path, RegexOptions.Compiled);      
     }
 
     public ICollection<RepositoryItemAction> Actions
@@ -47,6 +47,15 @@ namespace Silverseed.RepoCop
           this.validActions.AddRange(value);
         }
       }
+    }
+
+    /// <summary>
+    /// Returns a <see cref="System.String"/> that represents the current <see cref="ChangedPathCondition"/>.
+    /// </summary>
+    /// <returns>A <see cref="System.String"/> that represents the current condition.</returns>
+    public override string ToString()
+    {
+      return string.Format($"{nameof(ChangedPathCondition)} ({this.validActions.Count} action(s): {string.Join(";", this.validActions)}; PathRegEx: [{this.changedPathRegExPattern}])");
     }
 
     protected override void UpdateState(IRepoChangeInfo repoChangeInfo)

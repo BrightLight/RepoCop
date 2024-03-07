@@ -18,7 +18,6 @@
 
 namespace Silverseed.RepoCop.Xml
 {
-  using System;
   using System.Collections.Generic;
   using Silverseed.Core.Conditions;
 

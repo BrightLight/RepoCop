@@ -20,6 +20,7 @@ namespace Silverseed.RepoCop
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
 
   /// <summary>
   /// A condition that checks if the author of a change matches a given author(s).
@@ -61,5 +62,14 @@ namespace Silverseed.RepoCop
     public bool CaseSensitive { get; set; }
 
     private StringComparison DetermineStringComparison => this.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+    /// <summary>
+    /// Returns a <see cref="System.String"/> that represents the current <see cref="AuthorCondition"/>.
+    /// </summary>
+    /// <returns>A <see cref="System.String"/> that represents the current <see cref="AuthorCondition"/>.</returns>
+    public override string ToString()
+    {
+      return string.Format($"{nameof(AuthorCondition)} ({this.authors.Count} author(s): {string.Join(";", this.authors)}; {nameof(CaseSensitive)}: {this.CaseSensitive})");
+    }
   }
 }

@@ -20,6 +20,7 @@ namespace Silverseed.RepoCop
 {
   using System;
   using System.Collections.Generic;
+  using System.Text;
 
   internal class MacroInstruction : Instruction
   {
@@ -42,7 +43,12 @@ namespace Silverseed.RepoCop
       var text = base.ToString();
       foreach (var instruction in this.instructions)
       {
-        text += Environment.NewLine + "  " + instruction;
+        // Process each instruction's ToString() result to handle newlines
+        var instructionText = instruction.ToString();
+
+        // Replace newlines within the instruction's text with a newline and additional indentation
+        var indentedInstructionText = instructionText.Replace(Environment.NewLine, Environment.NewLine + "  ");
+        text += Environment.NewLine + "  " + indentedInstructionText;
       }
 
       return text;

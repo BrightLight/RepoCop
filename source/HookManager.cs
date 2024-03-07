@@ -67,13 +67,13 @@ namespace Silverseed.RepoCop
     /// Builds the instructions according to the hook configuration file.
     /// </summary>
     /// <returns>A <see cref="MacroInstruction"/> containing all the defined instructions.</returns>
-    public static Instruction ReadHookConfigurationFile(string configurationFile)
+    public static Instruction ReadHookConfiguration(string configurationFile)
     {
       using var configXmlStream = new FileStream(configurationFile, FileMode.Open, FileAccess.Read);
-      return ParseInstructions(configXmlStream);
+      return ReadHookConfiguration(configXmlStream);
     }
 
-    internal static Instruction ParseInstructions(Stream configXmlStream)
+    public static Instruction ReadHookConfiguration(Stream configXmlStream)
     {
       var xmlHub = new XmlHub(new HookConfigServiceLocator());
 

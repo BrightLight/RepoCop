@@ -57,11 +57,7 @@ namespace Silverseed.RepoCop.Subversion
           log.DebugFormat("Argument0: [{0}] - Argument1: [{1}] - Argument2: [{2}]", args[0], args[1], args[2]);
         }
 
-        string actionArgument = null;
-        if (args.Length > 0)
-        {
-          actionArgument = args[0];
-        }
+        var actionArgument = args.Length > 0 ? args[0] : string.Empty;
 
         if (!ProcessParameters(args))
         {
@@ -77,7 +73,7 @@ namespace Silverseed.RepoCop.Subversion
           return;
         }
 
-        var instructions = HookManager.ReadHookConfigurationFile(configurationFile);
+        var instructions = HookManager.ReadHookConfiguration(configurationFile);
         IRepoChangeInfo repoChangeInfo = null;
         switch (actionArgument)
         {

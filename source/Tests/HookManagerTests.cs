@@ -20,7 +20,9 @@ namespace Silverseed.RepoCop.Tests
 {
   using System.IO;
   using System.Text;
+  using System.Threading.Tasks;
   using NUnit.Framework;
+  using VerifyNUnit;
 
   /// <summary>
   /// Unit tests for the <see cref="HookManager"/> class.
@@ -40,7 +42,7 @@ namespace Silverseed.RepoCop.Tests
       var byteArray = Encoding.UTF8.GetBytes(config);
       var stream = new MemoryStream(byteArray);
       
-      var instruction = HookManager.ParseInstructions(stream);
+      var instruction = HookManager.ReadHookConfiguration(stream);
       Assert.That(instruction, Is.Not.Null);
       var macroInstruction = instruction as MacroInstruction;
       Assert.That(macroInstruction, Is.Not.Null);
@@ -48,6 +50,28 @@ namespace Silverseed.RepoCop.Tests
       var capabilityCondition= firstInstruction.Condition as CapabilityCondition;
       Assert.That(capabilityCondition, Is.Not.Null);
       Assert.That(capabilityCondition.Capability, Is.EqualTo("MergeInfo"));
+    }
+
+    /// <summary>
+    /// Verify that a configuration that contains all possible features can be read correctly.
+    /// </summary>
+    [Test]
+    public Task ReadFullFeatureConfig()
+    {
+      // arrange
+      var config = Resources.Resources.FullFeatureConfigTest;
+
+      // read XML from file as stream
+      var byteArray = Encoding.UTF8.GetBytes(config);
+      var stream = new MemoryStream(byteArray);
+
+      // act
+      var instructions = HookManager.ReadHookConfiguration(stream);
+
+      // assert
+      Assert.That(instructions, Is.Not.Null);
+      return Verifier.Verify(instructions.ToString())
+        .UseDirectory("VerifiedResults");
     }
   }
 }

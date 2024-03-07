@@ -1,0 +1,39 @@
+﻿Silverseed.RepoCop.MacroInstruction
+  <no condition>
+  Silverseed.RepoCop.MacroInstruction
+    <no condition>
+  Silverseed.RepoCop.MacroInstruction
+    HookTypeCondition (HookType: StartCommit)
+    Silverseed.RepoCop.FailInstruction
+      Silverseed.Core.Conditions.NotCondition
+      Silverseed.RepoCop.CapabilityCondition
+  Silverseed.RepoCop.MacroInstruction
+    HookTypeCondition (HookType: PreCommit)
+    Silverseed.RepoCop.FailInstruction
+      Silverseed.Core.Conditions.NotCondition
+      Silverseed.RepoCop.LogMessageCondition
+    Silverseed.RepoCop.FailInstruction
+      Silverseed.Core.Conditions.AndCondition
+      Silverseed.Core.Conditions.NotCondition
+        Silverseed.RepoCop.LogMessageCondition
+      ChangedPathCondition (1 action(s): Add; PathRegEx: [.*\.(png|bmp)])
+    Silverseed.RepoCop.FailInstruction
+      ChangedPathCondition (0 action(s): ; PathRegEx: [.*/branches/version_1\.1.*])
+    Silverseed.RepoCop.FailInstruction
+      Silverseed.Core.Conditions.AndCondition
+      Silverseed.Core.Conditions.NotCondition
+        AuthorCondition (3 author(s): ab;cd;ef; CaseSensitive: False)
+      Silverseed.Core.Conditions.OrCondition
+        ChangedPathCondition (0 action(s): ; PathRegEx: [/special/domainpath1/.*])
+        ChangedPathCondition (0 action(s): ; PathRegEx: [/special/domainpath2/.*])
+        ChangedPathCondition (0 action(s): ; PathRegEx: [/special/domainpath3/.*])
+  Silverseed.RepoCop.MacroInstruction
+    HookTypeCondition (HookType: PostCommit)
+    Silverseed.RepoCop.MailInstruction
+      Silverseed.Core.Conditions.AndCondition
+      AuthorCondition (3 author(s): AB;CD;EF; CaseSensitive: True)
+      ChangedPathCondition (0 action(s): ; PathRegEx: [.*/trunk/ImportantFile.txt])
+    Silverseed.RepoCop.MailInstruction
+      <no condition>
+    Silverseed.RepoCop.CommandLineInstruction
+      ChangedPathCondition (3 action(s): Add;Modify;Replace; PathRegEx: [.*\.cs])

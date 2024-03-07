@@ -75,6 +75,7 @@ namespace Silverseed.RepoCop
 
     public static Instruction ReadHookConfiguration(Stream configXmlStream)
     {
+      ObjectFactory.Instance.ObjectStack.Clear();
       var xmlHub = new XmlHub(new HookConfigServiceLocator());
 
       var instructions = new MacroInstruction();

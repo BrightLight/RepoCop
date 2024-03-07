@@ -20,11 +20,12 @@ namespace Silverseed.RepoCop.Tests
 {
   using System;
   using System.Collections.Generic;
-  using System.IO;
-  using System.Linq;
-  using System.Text;
-  using NUnit.Framework;
   using System.Diagnostics;
+  using System.IO;
+  using System.Threading.Tasks;
+  using NUnit.Framework;
+  using Silverseed.RepoCop.Subversion;
+  using VerifyNUnit;
 
   /// <summary>
   /// Unit tests for the <see cref="CommandLineInstruction"/> class.
@@ -55,7 +56,7 @@ namespace Silverseed.RepoCop.Tests
         Arguments = "5 TextParam",
       };
 
-    var result = commandLineInstruction.Execute();
+      var result = commandLineInstruction.Execute();
       Assert.That(result, Is.False);
     }
 
@@ -105,7 +106,7 @@ namespace Silverseed.RepoCop.Tests
         Arguments = "0 " + standardParameterText + " " + errorParameterText,
       };
 
-    var result = commandLineInstruction.Execute();
+      var result = commandLineInstruction.Execute();
       Assert.That(result, Is.True);
       streamWriter.Flush();
       memoryStream.Position = 0;
@@ -124,6 +125,52 @@ namespace Silverseed.RepoCop.Tests
       var processStartInfo = commandLineInstruction.CreateProcessStartInfo();
       Assert.That(processStartInfo, Is.Not.Null);
       Assert.That(processStartInfo.Arguments, Is.EqualTo("first line second line third line"));
+    }
+
+    /// <summary>
+    /// Confirm that the <see cref="CommandLineInstruction"/> class can handle the case where the affected files are written to a file.
+    /// </summary>
+    [Test]
+    public Task TokensWithAtPrefixWriteContentIntoFile()
+    {
+      // arrange
+      List<IRepoAffectedItem> affectedItems =
+      [
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Add, RepositoryItemNodeKind.File, "trunk/AB/MyFile.txt"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Delete, RepositoryItemNodeKind.File, "trunk/AB/MyFile2.txt"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image1.png"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image2.png"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image3.png"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image4.png"),
+          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image5.png"),
+        ];
+      List<string> capabilities = ["MergeInfo"];
+      RepositoryInfoHub.Instance.RepoChangeInfo = new SvnLookRepoChangeInfo(HookType.PostCommit, "AB", "My first commit", 13, new DateTime(2022, 10, 1), affectedItems, capabilities);
+
+      var commandLineInstruction = new CommandLineInstructionTest
+      {
+        FileName = "LogAllCommits.bat",
+        Arguments = "--author #author# --revision #revision# --affectedfiles \"#@affectedfiles#\"",
+      };
+
+      // act
+      var processStartInfo = commandLineInstruction.CreateProcessStartInfo();
+
+      // assert
+      Assert.That(processStartInfo, Is.Not.Null);
+      var expectedFileName = Path.GetTempPath() + "affectedfiles-13";
+      Assert.That(processStartInfo.Arguments, Is.EqualTo($"--author AB --revision 13 --affectedfiles \"@{expectedFileName}\""));
+      Assert.That(expectedFileName, Does.Exist);
+      try
+      {
+        var fileContent = File.ReadAllText(expectedFileName);
+        return Verifier.Verify(fileContent)
+          .UseDirectory("VerifiedResults");
+      }
+      finally
+      {
+        File.Delete(expectedFileName);
+      }
     }
 
     /// <summary>

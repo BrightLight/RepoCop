@@ -22,6 +22,7 @@ namespace Silverseed.RepoCop
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.Globalization;
+  using System.IO;
   using System.Text;
 
   /// <summary>
@@ -60,6 +61,12 @@ namespace Silverseed.RepoCop
       this.tokenDictionary.Add("#affectedfilesdetailed#", () => this.GetAffectedPaths(RepositoryItemNodeKind.File, Environment.NewLine, true));
       this.tokenDictionary.Add("#affectedpaths#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine));
       this.tokenDictionary.Add("#affectedpathsdetailed#", () => this.GetAffectedPaths(RepositoryItemNodeKind.Unknown, Environment.NewLine, true));
+
+      // "@" tokens: store the content of the token in a file and return the filename
+      this.tokenDictionary.Add("#@affectedfiles#", () => this.repoChangeInfo != null ? this.SaveAffectedPathsToFile("affectedfiles", this.repoChangeInfo.Revision, RepositoryItemNodeKind.File, Environment.NewLine) : string.Empty);
+      this.tokenDictionary.Add("#@affectedfilesdetailed#", () => this.repoChangeInfo != null ? this.SaveAffectedPathsToFile("affectedfilesdetailed", this.repoChangeInfo.Revision, RepositoryItemNodeKind.File, Environment.NewLine, true) : string.Empty);
+      this.tokenDictionary.Add("#@affectedpaths#", () => this.repoChangeInfo != null ? this.SaveAffectedPathsToFile("affectedpaths", this.repoChangeInfo.Revision, RepositoryItemNodeKind.Unknown, Environment.NewLine) : string.Empty);
+      this.tokenDictionary.Add("#@affectedpathsdetailed#", () => this.repoChangeInfo != null ?  this.SaveAffectedPathsToFile("affectedpathsdetailed", this.repoChangeInfo.Revision, RepositoryItemNodeKind.Unknown, Environment.NewLine, true) : string.Empty);
     }
 
     #region INotifyPropertyChanged Members
@@ -188,6 +195,44 @@ namespace Silverseed.RepoCop
       }
 
       return stringBuilder.ToString();
+    }
+
+    private string SaveAffectedPathsToFile(string token, long revision, RepositoryItemNodeKind nodeKind, string separator, bool detailed = false)
+    {
+      var filename = this.BuildFileName(token, revision);
+      this.SaveAffectedPathsToFile(filename, nodeKind, separator, detailed);
+      return "@" + filename;
+    }
+
+    /// <summary>
+    /// Saves the affected files or paths (depending on <paramref name="nodeKind"/>) to a file.
+    /// </summary>
+    /// <param name="filename">The name of the file to which the affected paths are saved.</param>
+    /// <param name="nodeKind">Determines whether files (<see cref="RepositoryItemNodeKind.File"/>) or paths (<see cref="RepositoryItemNodeKind.Unknown"/>) are saved.</param>
+    /// <param name="separator">The separator to use between the affected paths.</param>
+    /// <param name="detailed"><c>true</c> to save detailed information about the affected paths; <c>false</c> to save only the paths.</param>
+    /// <remarks>
+    /// If <paramref name="detailed"/> is <c>true</c>, the file will contain the affected paths, their action and their node kind, separated by the specified <paramref name="separator"/>.
+    /// Otherwise the file will contain only the affected paths, separated by the specified <paramref name="separator"/>.
+    /// </remarks>
+    private void SaveAffectedPathsToFile(string filename, RepositoryItemNodeKind nodeKind, string separator, bool detailed = false)
+    {
+      var fileContent = GetAffectedPaths(nodeKind, separator, detailed);
+      File.WriteAllText(filename, fileContent, Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Builds the file name for the specified <paramref name="token"/> and <paramref name="revision"/>.
+    /// This file will be used to store the content of the <paramref name="token"/> (instead of passing the content directly in the command line).
+    /// </summary>
+    /// <param name="token">The token for which a filename is created.</param>
+    /// <param name="revision">The revision for which a filename is created.</param>
+    /// <returns>A filename in the temp folder. Filename will start with the token, then minus, then revision number.</returns>
+    private string BuildFileName(string token, long revision)
+    {
+      var tempPath = Path.GetTempPath();
+      var fileName = $"{token}-{revision}";
+      return Path.Combine(tempPath, fileName);
     }
   }
 }

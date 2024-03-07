@@ -1,0 +1,7 @@
+﻿trunk/AB/MyFile.txt
+trunk/AB/MyFile2.txt
+trunk/resources/image1.png
+trunk/resources/image2.png
+trunk/resources/image3.png
+trunk/resources/image4.png
+trunk/resources/image5.png

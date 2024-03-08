@@ -37,6 +37,7 @@ namespace Silverseed.RepoCop.Xml
       this.RegisterHandler("ChangedPathCondition", typeof(ChangedPathConditionXmlHandler));
       this.RegisterHandler("CapabilityCondition", typeof(CapabilityConditionXmlHandler));
       this.RegisterHandler("HookTypeCondition", typeof(HookTypeConditionXmlHandler));
+      this.RegisterHandler("TimeWindowCondition", typeof(TimeWindowConditionXmlHandler));
       this.RegisterHandler("Instructions", typeof(InstructionsXmlHandler));
       this.RegisterHandler("CommandLineInstruction", typeof(CommandLineInstructionXmlHandler));
       this.RegisterHandler("FailInstruction", typeof(FailInstructionXmlHandler));

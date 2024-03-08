@@ -18,6 +18,7 @@
 
 namespace Silverseed.RepoCop.Tests
 {
+  using System;
   using System.IO;
   using System.Text;
   using System.Threading.Tasks;
@@ -53,8 +54,31 @@ namespace Silverseed.RepoCop.Tests
     }
 
     /// <summary>
-    /// Verify that a configuration that contains all possible features can be read correctly.
+    /// Tests that a TimeWindow condition is read correctly from an XML configuration.
     /// </summary>
+    [Test]
+    public void TimeWindowConditionIsReadCorrectly()
+    {
+      var config = Resources.Resources.TimeWindowConditionConfigTest;
+
+      // read XML from file as stream
+      var byteArray = Encoding.UTF8.GetBytes(config);
+      var stream = new MemoryStream(byteArray);
+
+      var instruction = HookManager.ReadHookConfiguration(stream);
+      Assert.That(instruction, Is.Not.Null);
+      var macroInstruction = instruction as MacroInstruction;
+      Assert.That(macroInstruction, Is.Not.Null);
+      var firstInstruction = macroInstruction.Instructions[0];
+      var timeWindowCondition = firstInstruction.Condition as TimeWindowCondition;
+      Assert.That(timeWindowCondition, Is.Not.Null);
+      Assert.That(timeWindowCondition.StartTime, Is.EqualTo(new DateTime(2022, 2, 1, 8, 30, 0)));
+      Assert.That(timeWindowCondition.EndTime, Is.EqualTo(new DateTime(2022, 2, 1, 11, 00, 0)));
+    }
+    
+    /// <summary>
+         /// Verify that a configuration that contains all possible features can be read correctly.
+         /// </summary>
     [Test]
     public Task ReadFullFeatureConfig()
     {

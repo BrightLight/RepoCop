@@ -79,16 +79,40 @@ namespace Silverseed.RepoCop.Tests.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;configuration&gt;
+        ///  &lt;SmtpServer Host=&quot;localhost&quot; /&gt;
+        ///  &lt;!-- Global instructions (always executed without regard of hook type) --&gt;
+        ///  &lt;Instructions&gt;
+        ///  &lt;/Instructions&gt;
+        ///
         ///  &lt;!-- Start-Commit instructions --&gt;
         ///  &lt;Instructions&gt;
-        ///    &lt;CapabilityCondition Capability=&quot;MergeInfo&quot; /&gt;
+        ///    &lt;HookTypeCondition HookType=&quot;StartCommit&quot; /&gt;
+        ///    &lt;FailInstruction Message=&quot;Please update your subversion client.&quot;&gt;
+        ///      &lt;CapabilityCondition Capability=&quot;MergeInfo&quot; Negate=&quot;True&quot;/&gt;
+        ///    &lt;/FailInstruction&gt;
         ///  &lt;/Instructions&gt;
-        ///&lt;/configuration&gt;
-        ///.
+        ///
+        ///  &lt;!-- Pre-Commit instructions  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FullFeatureConfigTest {
             get {
                 return ResourceManager.GetString("FullFeatureConfigTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///  &lt;!-- Start-Commit instructions --&gt;
+        ///  &lt;Instructions&gt;
+        ///    &lt;TimeWindowCondition StartTime=&quot;2022-02-01 08:30:00&quot; EndTime=&quot;2022-02-01 11:00:00&quot; /&gt;
+        ///  &lt;/Instructions&gt;
+        ///&lt;/configuration&gt;
+        ///.
+        /// </summary>
+        internal static string TimeWindowConditionConfigTest {
+            get {
+                return ResourceManager.GetString("TimeWindowConditionConfigTest", resourceCulture);
             }
         }
     }

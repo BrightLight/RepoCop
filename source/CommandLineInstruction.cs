@@ -59,13 +59,9 @@ namespace Silverseed.RepoCop
     protected ProcessStartInfo CreateProcessStartInfo()
     {
       var processStartInfo = new ProcessStartInfo();
-      processStartInfo.ErrorDialog = false;
-      processStartInfo.CreateNoWindow = true;
-      processStartInfo.UseShellExecute = false;
-      processStartInfo.RedirectStandardOutput = true;
-      processStartInfo.RedirectStandardError = true;
       processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
       processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
+      processStartInfo.ErrorDialog = false;
 
       log.DebugFormat("FileName (Unprocessed): [{0}]", this.FileName);
       log.DebugFormat("FileName (Processed): [{0}]", processStartInfo.FileName);
@@ -89,18 +85,38 @@ namespace Silverseed.RepoCop
       }
     }
 
+    /// <summary>
+    /// Executes the command line instruction and does not wait for the process to exit.
+    /// </summary>
+    /// <returns>Always true.</returns>
+    /// <remarks>
+    /// <see cref="ProcessStartInfo.CreateNoWindow"/> is ignored when <see cref="ProcessStartInfo.UseShellExecute"/> is set to true
+    /// (source: <see href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo.createnowindow"/>).
+    /// </remarks>
     private bool ExecuteFireAndForgetInstruction()
     {
-      var processStartInfo = new ProcessStartInfo();
-      processStartInfo.FileName = RepositoryInfoHub.Instance.ParseTokens(this.FileName);
-      processStartInfo.Arguments = RepositoryInfoHub.Instance.ParseTokens(this.Arguments).Replace(Environment.NewLine, this.NewLineReplacement);
+      var processStartInfo = this.CreateProcessStartInfo();
+      processStartInfo.UseShellExecute = true;
       Process.Start(processStartInfo);
       return true;
     }
 
+    /// <summary>
+    /// Executes the command line instruction and waits for the process to exit.
+    /// </summary>
+    /// <returns>True if the process exited with the expected exit code, false otherwise.</returns>
+    /// <remarks>
+    /// For more information regarding UseShellExecute see
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-diagnostics-processstartinfo-useshellexecute"/>.
+    /// </remarks>
     private bool ExecuteWaitForExitInstruction()
     {
       var processStartInfo = this.CreateProcessStartInfo();
+      processStartInfo.CreateNoWindow = true;
+      processStartInfo.UseShellExecute = false; // Required for redirecting output and error streams
+      processStartInfo.RedirectStandardOutput = true;
+      processStartInfo.RedirectStandardError = true;
+
       var process = new Process();
       process.StartInfo = processStartInfo;
       process.OutputDataReceived += this.process_OutputDataReceived;
@@ -118,7 +134,16 @@ namespace Silverseed.RepoCop
         if (process.WaitForExit(this.TimeoutInMilliseconds))
         {
           process.WaitForExit();
-          return process.ExitCode == this.ExpectedExitCode;
+          var wasSuccess = process.ExitCode == this.ExpectedExitCode;
+          if (!wasSuccess)
+          {
+            var logMessage = $"Process exited with unexpected exit code [{process.ExitCode}]. Expected exit code was [{this.ExpectedExitCode}].\n"
+              + $"Filename: [{processStartInfo.FileName}]\n"
+              + $"Arguments: [{processStartInfo.Arguments}]";
+            log.WarnFormat(logMessage);
+          }
+
+          return wasSuccess;
         }
       }
       finally

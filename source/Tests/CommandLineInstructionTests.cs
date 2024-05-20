@@ -137,13 +137,13 @@ namespace Silverseed.RepoCop.Tests
       List<IRepoAffectedItem> affectedItems =
       [
         new SvnLookRepoAffectedItem(RepositoryItemAction.Add, RepositoryItemNodeKind.File, "trunk/AB/MyFile.txt"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Delete, RepositoryItemNodeKind.File, "trunk/AB/MyFile2.txt"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image1.png"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image2.png"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image3.png"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image4.png"),
-          new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image5.png"),
-        ];
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Delete, RepositoryItemNodeKind.File, "trunk/AB/MyFile2.txt"),
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image1.png"),
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image2.png"),
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image3.png"),
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image4.png"),
+        new SvnLookRepoAffectedItem(RepositoryItemAction.Modify, RepositoryItemNodeKind.File, "trunk/resources/image5.png"),
+      ];
       List<string> capabilities = ["MergeInfo"];
       RepositoryInfoHub.Instance.RepoChangeInfo = new SvnLookRepoChangeInfo(HookType.PostCommit, "AB", "My first commit", 13, new DateTime(2022, 10, 1), affectedItems, capabilities);
 

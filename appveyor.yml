@@ -3,6 +3,7 @@ image: Visual Studio 2022
 configuration: Release
 before_build:
 - cmd: dotnet restore source
+- ps: '[System.Environment]::SetEnvironmentVariable("Version", $env:APPVEYOR_BUILD_VERSION, [System.EnvironmentVariableTarget]::Process)'
 build:
   verbosity: minimal
 build_script:

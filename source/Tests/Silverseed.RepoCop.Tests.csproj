@@ -10,6 +10,9 @@
     <Product>Silverseed.RepoCop</Product>
     <Copyright>Copyright © 2014</Copyright>
     <ComVisible>false</ComVisible>
+    <Version>$(Version)</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />

@@ -20,10 +20,18 @@ namespace Silverseed.RepoCop
 {
   using System.Text.RegularExpressions;
 
+  /// <summary>
+  /// A condition that checks if the log message of a change matches a given regular expression.
+  /// </summary>
   internal class LogMessageCondition : RepositoryInfoHubCondition
   {
     private readonly Regex logMessageRegExPattern;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LogMessageCondition"/> class.
+    /// </summary>
+    /// <param name="logMessageRegExPattern">The regular expression pattern to match against the log message.</param>
+    /// <param name="regexOptions">The regular expression options to use.</param>
     public LogMessageCondition(string logMessageRegExPattern, RegexOptions regexOptions)
     {
       regexOptions |= RegexOptions.Compiled;

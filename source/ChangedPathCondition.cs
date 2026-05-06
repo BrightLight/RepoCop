@@ -21,17 +21,27 @@ namespace Silverseed.RepoCop
   using System.Collections.Generic;
   using System.Text.RegularExpressions;
 
+  /// <summary>
+  /// A condition that checks if any of the changed paths in a repository change match a given regular expression.
+  /// </summary>
   internal class ChangedPathCondition : RepositoryInfoHubCondition
   {
     private readonly Regex changedPathRegExPattern;
 
     private readonly List<RepositoryItemAction> validActions = new List<RepositoryItemAction>();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChangedPathCondition"/> class.
+    /// </summary>
+    /// <param name="path">The regular expression pattern to match against the changed paths.</param>
     public ChangedPathCondition(string path)
     {
       this.changedPathRegExPattern = new Regex(path, RegexOptions.Compiled);      
     }
 
+    /// <summary>
+    /// Gets or sets the repository actions that are valid for this condition.
+    /// </summary>
     public ICollection<RepositoryItemAction> Actions
     {
       get

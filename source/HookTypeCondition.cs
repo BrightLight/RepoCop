@@ -20,6 +20,9 @@ namespace Silverseed.RepoCop
 {
   using System;
 
+  /// <summary>
+  /// A condition that checks if the hook type of a change matches a given hook type.
+  /// </summary>
   internal class HookTypeCondition : RepositoryInfoHubCondition
   {
     /// <summary>
@@ -35,6 +38,9 @@ namespace Silverseed.RepoCop
       this.State = (this.HookType == HookType.Undefined) || (this.HookType == repoChangeInfo.HookType);
     }
 
+    /// <summary>
+    /// Gets or sets the hook type that this condition checks for.
+    /// </summary>
     public HookType HookType { get; set; }
 
     /// <summary>

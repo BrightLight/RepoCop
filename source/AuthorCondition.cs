@@ -29,11 +29,19 @@ namespace Silverseed.RepoCop
   {
     private readonly List<string> authors = new List<string>();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthorCondition"/> class with a single author.
+    /// </summary>
+    /// <param name="author">The author to check for.</param>
     public AuthorCondition(string author)
     {
       this.authors.Add(author);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthorCondition"/> class with multiple authors.
+    /// </summary>
+    /// <param name="authors">The authors to check for.</param>
     public AuthorCondition(IEnumerable<string> authors)
     {
       this.authors.AddRange(authors);
@@ -45,6 +53,9 @@ namespace Silverseed.RepoCop
       this.State = this.authors.Exists( x => string.Equals(repoChangeInfo.Author, x, stringComparison));
     }
 
+    /// <summary>
+    /// Gets or sets the collection of authors to check against.
+    /// </summary>
     public ICollection<string> Authors
     {
       get
@@ -59,6 +70,9 @@ namespace Silverseed.RepoCop
       }
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the author comparison is case-sensitive.
+    /// </summary>
     public bool CaseSensitive { get; set; }
 
     private StringComparison DetermineStringComparison => this.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;

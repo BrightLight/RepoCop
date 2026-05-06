@@ -122,6 +122,11 @@ namespace Silverseed.RepoCop
     /// <returns>The specified <paramref name="rawText"/> with all known replacement tokens replaced with their actual values.</returns>
     public string ParseTokens(string rawText)
     {
+      if (rawText == null)
+      {
+        return null;
+      }
+
       var newText = rawText;
       foreach (var token in this.tokenDictionary)
       {

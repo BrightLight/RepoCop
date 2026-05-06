@@ -59,6 +59,11 @@ namespace Silverseed.RepoCop
       }
     }
 
+    internal static void Flush()
+    {
+      instance = null;
+    }
+
     /// <summary>
     /// Registers the specified <paramref name="mailServer"/>.
     /// </summary>
